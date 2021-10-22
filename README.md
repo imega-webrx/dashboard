@@ -1,1 +1,1 @@
-#Dashboard for adding drug data
+Dashboard for adding drug data
