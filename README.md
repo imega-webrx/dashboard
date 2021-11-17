@@ -1,1 +1,6 @@
-Dashboard for adding drug data
+### `yarn start`
+### `yarn build`
+### `yarn test`
+
+### `yarn storybook`
+### `yarn build-storybook`
