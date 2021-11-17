@@ -1,22 +1,19 @@
-import React from 'react';
-
-import { Page } from './Page';
-import * as HeaderStories from './Header.stories';
+import React from "react";
+import App from "../App";
 
 export default {
-  title: 'Example/Page',
-  component: Page,
+    component: App,
+    title: "Pages",
 };
 
-const Template = (args) => <Page {...args} />;
+const Template = () => <App />;
 
-export const LoggedIn = Template.bind({});
-LoggedIn.args = {
-  // More on composing args: https://storybook.js.org/docs/react/writing-stories/args#args-composition
-  ...HeaderStories.LoggedIn.args,
+const MainStory = Template.bind({});
+
+MainStory.args = {};
+
+MainStory.story = {
+    name: "App",
 };
 
-export const LoggedOut = Template.bind({});
-LoggedOut.args = {
-  ...HeaderStories.LoggedOut.args,
-};
+export { MainStory };
