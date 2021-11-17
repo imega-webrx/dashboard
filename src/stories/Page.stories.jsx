@@ -6,7 +6,7 @@ export default {
     title: "Pages",
 };
 
-const Template = () => <App />;
+const Template = (args) => <App {...args} />;
 
 const MainStory = Template.bind({});
 
