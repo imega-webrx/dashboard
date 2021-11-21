@@ -3,12 +3,16 @@ import { Table, Space, Button } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import { gql, useQuery } from "@apollo/client";
 
-const GET_FOLDER = gql`
+const GET_CATALOG = gql`
   query Query {
-    getProductsFromFolder(subject: "e27afe47-e26f-4796-8e25-1e2e873d708c") {
-      id
-      title
-      description
+    catalog(id: "e27afe47-e26f-4796-8e25-1e2e873d708c") {
+      __typename
+      ...on Product {
+        id
+        title
+        description
+        price
+      }
     }
   }
 `;
@@ -61,7 +65,7 @@ const expandable = {
 };
 
 const TableData = () => {
-  const [tableState] = useState({
+  const [tableState, setTableState] = useState({
     bordered: false,
     loading: false,
     pagination: { position: "bottom" },
@@ -77,21 +81,24 @@ const TableData = () => {
     bottom: "bottomRight",
   });
 
-  const { loading, error, data: folder } = useQuery(GET_FOLDER);
+  const { loading, error, data: folder } = useQuery(GET_CATALOG);
   if (loading) {
     return <p>Loading...</p>;
   }
   if (error) {
+    setTableState(prev => ({...prev, hasData: false}))
     return console.log("Error");
   }
 
-  const data = folder.getProductsFromFolder.map((product) => ({
-    key: product.id,
-    title: product.title,
-    price: 5,
-    type: "pill",
-    description: product.description,
-  }));
+  const data = folder.catalog
+    .filter(result => result.__typename === "Product")
+    .map((product) => ({
+      key: product.id,
+      title: product.title,
+      price: product.price,
+      type: "pill",
+      description: product.description,
+    }));
 
   // const data = [];
   // for (let i = 1; i <= 37; i++) {
