@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Table, Space, Button } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import { gql, useQuery } from "@apollo/client";
+import { useNavigate } from "react-router-dom";
 
 const GET_CATALOG = gql`
   query Query {
@@ -42,30 +43,16 @@ const columns = [
     ],
     onFilter: (value, record) => record.type.indexOf(value) === 0,
   },
-  {
-    title: "Action",
-    key: "action",
-    sorter: false,
-    render: () => (
-      <Space size="middle">
-        <Button className="primary">View</Button>
-        <Button className="primary">
-          More actions <DownOutlined />
-        </Button>
-        <Button type="primary" danger ghost>
-          Delete
-        </Button>
-      </Space>
-    ),
-  },
 ];
 
 const expandable = {
   expandedRowRender: (record) => <p>{record.description}</p>,
 };
 
-const TableData = () => {
-  const [tableState, setTableState] = useState({
+const ProductsTable = () => {
+  const navigate = useNavigate();
+
+  const [tableState] = useState({
     bordered: false,
     loading: false,
     pagination: { position: "bottom" },
@@ -73,7 +60,7 @@ const TableData = () => {
     expandable,
     title: undefined,
     showHeader: true,
-    //rowSelection: {},
+    // rowSelection: {},
     scroll: undefined,
     hasData: true,
     tableLayout: undefined,
@@ -86,11 +73,9 @@ const TableData = () => {
     return <p>Loading...</p>;
   }
   if (error) {
-    setTableState(prev => ({...prev, hasData: false}))
-    return console.log("Error");
+    console.error("Error in GET_CATALOG:", error);
   }
-
-  const data = folder.catalog
+  const data = folder ? folder.catalog
     .filter(result => result.__typename === "Product")
     .map((product) => ({
       key: product.id,
@@ -98,7 +83,7 @@ const TableData = () => {
       price: product.price,
       type: "pill",
       description: product.description,
-    }));
+    })) : [];
 
   // const data = [];
   // for (let i = 1; i <= 37; i++) {
@@ -111,10 +96,31 @@ const TableData = () => {
   //   });
   // }
 
+  const onViewProduct = (id) => {
+    navigate(`/product/${id}`)
+  }
+
   const tableColumns = columns.map((item) => ({
     ...item,
     ellipsis: tableState.ellipsis,
   }));
+
+  tableColumns.push({
+    title: "Action",
+    key: "action",
+    sorter: false,
+    render: (action) => (
+      <Space size="middle">
+        <Button className="primary" onClick={() => onViewProduct(action.key)}>View</Button>
+        <Button className="primary">
+          More actions <DownOutlined />
+        </Button>
+        <Button type="primary" danger ghost>
+          Delete
+        </Button>
+      </Space>
+    ),
+  },)
 
   return (
     <>
@@ -128,4 +134,4 @@ const TableData = () => {
   );
 };
 
-export default TableData;
+export default ProductsTable;

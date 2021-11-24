@@ -6,6 +6,7 @@ import {
 } from "@ant-design/icons";
 import Sider from "antd/lib/layout/Sider";
 import { Menu } from "antd";
+import { Link } from "react-router-dom";
 
 const { SubMenu } = Menu;
 
@@ -19,8 +20,8 @@ const Aside = () => {
         style={{ height: "100%" }}
       >
         <SubMenu key="sub1" icon={<UserOutlined />} title="subnav 1">
-          <Menu.Item key="1">option1</Menu.Item>
-          <Menu.Item key="2">option2</Menu.Item>
+          <Menu.Item key="1"><Link to="/products">Products</Link></Menu.Item>
+          <Menu.Item key="2"><Link to="/product/123">Product</Link></Menu.Item>
           <Menu.Item key="3">option3</Menu.Item>
           <Menu.Item key="4">option4</Menu.Item>
         </SubMenu>
