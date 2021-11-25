@@ -7,6 +7,7 @@ import TopHeader from "./features/Header/Header";
 import Aside from "./features/Aside/Aside";
 import ProductsTable from "./pages/Product/Products";
 import Product from "./pages/Product/Product";
+import EditProduct from "./pages/Product/EditProduct";
 
 const { Content, Footer } = Layout;
 
@@ -29,6 +30,7 @@ function App() {
                 <Route path="/" element={<Navigate to="/products" />} />
                 <Route path="/products" element={<ProductsTable />} />
                 <Route path="/product/:id" element={<Product />} />
+                <Route path="/product/edit/:id" element={<EditProduct />} />
               </Routes>
             </Content>
           </Layout>
