@@ -84,18 +84,15 @@ const ProductsTable = () => {
   if (error || _error) {
     console.error("Error:", error);
   }
-  const data = folder
-    ? folder.catalog
-        .filter((result) => result.__typename === "Product")
-        .map((product) => ({
-          key: product.id,
-          title: product.title,
-          price: product.price,
-          type: "pill",
-          description: product.description,
-        }))
-    : [];
-
+  const data = folder?.catalog
+    .filter((result) => result.__typename === "Product")
+    .map((product) => ({
+      key: product.id,
+      title: product.title,
+      price: product.price,
+      type: "pill",
+      description: product.description,
+    }));
   // const data = [];
   // for (let i = 1; i <= 37; i++) {
   //   data.push({
