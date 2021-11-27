@@ -60,7 +60,7 @@ const EditProduct = () => {
     return "Submitting...";
   }
   if (_error) {
-    return `Submission error! ${error}`;
+    return `Submission error! ${_error}`;
   }
   if (!data.getProducts.length) {
     return <Navigate to="/products" />;
