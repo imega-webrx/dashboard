@@ -1,5 +1,5 @@
 import React from "react";
-import { gql, useQuery } from "@apollo/client";
+import { gql, useMutation, useQuery } from "@apollo/client";
 import { Descriptions, Image, Button, Row, Col } from "antd";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 
@@ -14,23 +14,43 @@ const GET_PRODUCT = gql`
   }
 `;
 
+const DELETE_PRODUCT = gql`
+  mutation Mutation($id: ID!) {
+    removeProduct(id: $id)
+  }
+`;
+
 const Product = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const { loading, error, data } = useQuery(GET_PRODUCT, {
+  const { loading, error, data, refetch } = useQuery(GET_PRODUCT, {
     variables: { uuIds: [id] },
   });
-  if (loading) {
+  const [
+    removeProduct,
+    { loading: _loading, error: _error, data: _data },
+  ] = useMutation(DELETE_PRODUCT);
+  if (loading || _loading) {
     return <p>Loading...</p>;
   }
-  if (error) {
-    console.error("Error in GET_CATALOG:", error);
+  if (error || _error) {
+    console.error("Error:", error);
   }
-
   if (!data.getProducts.length) {
     return <Navigate to="/products" />;
   }
+  if (_data?.removeProduct) {
+    return <Navigate to={"/products"} />
+  }
+
+  const onDeleteProduct = (id) => {
+    const conf = window.confirm("Are you sure you want to delete?");
+    if (!conf) return;
+
+    removeProduct({ variables: { id: id } });
+    // refetch()
+  };
 
   const product = data.getProducts[0];
 
@@ -98,7 +118,12 @@ const Product = () => {
           >
             Edit
           </Button>
-          <Button type="danger" size="middle" block>
+          <Button
+            type="danger"
+            size="middle"
+            block
+            onClick={() => onDeleteProduct(product.id)}
+          >
             Delete
           </Button>
         </div>

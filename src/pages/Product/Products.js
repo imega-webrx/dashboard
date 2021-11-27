@@ -1,20 +1,26 @@
 import { useState } from "react";
 import { Table, Space, Button } from "antd";
-import { DownOutlined } from "@ant-design/icons";
-import { gql, useQuery } from "@apollo/client";
+// import { DownOutlined } from "@ant-design/icons";
+import { gql, useMutation, useQuery } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
 
 const GET_CATALOG = gql`
   query Query {
     catalog(id: "e27afe47-e26f-4796-8e25-1e2e873d708c") {
       __typename
-      ...on Product {
+      ... on Product {
         id
         title
         description
         price
       }
     }
+  }
+`;
+
+const DELETE_PRODUCT = gql`
+  mutation Mutation($id: ID!) {
+    removeProduct(id: $id)
   }
 `;
 
@@ -68,22 +74,27 @@ const ProductsTable = () => {
     bottom: "bottomRight",
   });
 
-  const { loading, error, data: folder } = useQuery(GET_CATALOG);
-  if (loading) {
+  const { loading, error, data: folder, refetch } = useQuery(GET_CATALOG);
+  const [removeProduct, { loading: _loading, error: _error }] = useMutation(
+    DELETE_PRODUCT
+  );
+  if (loading || _loading) {
     return <p>Loading...</p>;
   }
-  if (error) {
-    console.error("Error in GET_CATALOG:", error);
+  if (error || _error) {
+    console.error("Error:", error);
   }
-  const data = folder ? folder.catalog
-    .filter(result => result.__typename === "Product")
-    .map((product) => ({
-      key: product.id,
-      title: product.title,
-      price: product.price,
-      type: "pill",
-      description: product.description,
-    })) : [];
+  const data = folder
+    ? folder.catalog
+        .filter((result) => result.__typename === "Product")
+        .map((product) => ({
+          key: product.id,
+          title: product.title,
+          price: product.price,
+          type: "pill",
+          description: product.description,
+        }))
+    : [];
 
   // const data = [];
   // for (let i = 1; i <= 37; i++) {
@@ -97,8 +108,16 @@ const ProductsTable = () => {
   // }
 
   const onViewProduct = (id) => {
-    navigate(`/product/${id}`)
-  }
+    navigate(`/product/${id}`);
+  };
+
+  const onDeleteProduct = (id) => {
+    const conf = window.confirm("Are you sure you want to delete?");
+    if (!conf) return;
+
+    removeProduct({ variables: { id: id } });
+    refetch();
+  };
 
   const tableColumns = columns.map((item) => ({
     ...item,
@@ -111,16 +130,23 @@ const ProductsTable = () => {
     sorter: false,
     render: (action) => (
       <Space size="middle">
-        <Button className="primary" onClick={() => onViewProduct(action.key)}>View</Button>
-        <Button className="primary">
-          More actions <DownOutlined />
+        <Button className="primary" onClick={() => onViewProduct(action.key)}>
+          View
         </Button>
-        <Button type="primary" danger ghost>
+        {/* <Button className="primary">
+          More actions <DownOutlined />
+        </Button> */}
+        <Button
+          type="primary"
+          danger
+          ghost
+          onClick={() => onDeleteProduct(action.key)}
+        >
           Delete
         </Button>
       </Space>
     ),
-  },)
+  });
 
   return (
     <>
