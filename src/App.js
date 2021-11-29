@@ -8,6 +8,7 @@ import Aside from "./features/Aside/Aside";
 import ProductsTable from "./pages/Product/Products";
 import Product from "./pages/Product/Product";
 import EditProduct from "./pages/Product/EditProduct";
+import AddProduct from "./pages/Product/AddProduct";
 
 const { Content, Footer } = Layout;
 
@@ -31,6 +32,7 @@ function App() {
                 <Route path="/products" element={<ProductsTable />} />
                 <Route path="/product/:id" element={<Product />} />
                 <Route path="/product/edit/:id" element={<EditProduct />} />
+                <Route path="/product/add" element={<AddProduct />} />
               </Routes>
             </Content>
           </Layout>

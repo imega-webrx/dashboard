@@ -1,28 +1,12 @@
 import { useState } from "react";
 import { Table, Space, Button } from "antd";
 // import { DownOutlined } from "@ant-design/icons";
-import { gql, useMutation, useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
-
-const GET_CATALOG = gql`
-  query Query {
-    catalog(id: "e27afe47-e26f-4796-8e25-1e2e873d708c") {
-      __typename
-      ... on Product {
-        id
-        title
-        description
-        price
-      }
-    }
-  }
-`;
-
-const DELETE_PRODUCT = gql`
-  mutation Mutation($id: ID!) {
-    removeProduct(id: $id)
-  }
-`;
+import {
+  GET_CATALOG,
+  DELETE_PRODUCT,
+} from "../../apollo/queries/product/productQueries";
 
 const columns = [
   {
@@ -74,9 +58,15 @@ const ProductsTable = () => {
     bottom: "bottomRight",
   });
 
-  const { loading, error, data: folder, refetch } = useQuery(GET_CATALOG);
+  const { loading, error, data: folder } = useQuery(GET_CATALOG);
   const [removeProduct, { loading: _loading, error: _error }] = useMutation(
-    DELETE_PRODUCT
+    DELETE_PRODUCT,
+    {
+      refetchQueries: [
+        GET_CATALOG, // DocumentNode object parsed with gql
+        ["catalog"], // Query name
+      ],
+    }
   );
   if (loading || _loading) {
     return <p>Loading...</p>;
@@ -113,7 +103,6 @@ const ProductsTable = () => {
     if (!conf) return;
 
     removeProduct({ variables: { id: id } });
-    refetch();
   };
 
   const tableColumns = columns.map((item) => ({

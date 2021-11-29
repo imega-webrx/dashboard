@@ -1,11 +1,13 @@
 import React from "react";
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { Image, Form, Input, InputNumber, Button, Row, Col } from "antd";
-import { Navigate, useParams, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import {
-  GET_PRODUCT,
-  UPDATE_PRODUCT,
+  GET_CATALOG,
+  ADD_PRODUCT,
+  MOVE_TO_FOLDER,
 } from "../../apollo/queries/product/productQueries";
+import { v4 as uuidv4 } from "uuid";
 
 const layout = {
   labelCol: { span: 4 },
@@ -24,48 +26,52 @@ const validateMessages = {
   },
 };
 
-const EditProduct = () => {
-  const { id } = useParams();
+const AddProduct = () => {
   const navigate = useNavigate();
-
-  const { loading, error, data, refetch } = useQuery(GET_PRODUCT, {
-    variables: { uuIds: [id] },
-  });
-  
+  const [addProduct, { loading, error, data }] = useMutation(ADD_PRODUCT);
   const [
-    updateProduct,
+    moveToFolder,
     { loading: _loading, error: _error, data: _data },
-  ] = useMutation(UPDATE_PRODUCT);
+  ] = useMutation(MOVE_TO_FOLDER, {
+    refetchQueries: [
+      GET_CATALOG, // DocumentNode object parsed with gql
+      "catalog", // Query name
+    ],
+  });
 
-  if (loading) {
+  if (loading || _loading) {
     return <p>Loading...</p>;
   }
   if (error) {
-    console.error("Error in GET_CATALOG:", error);
-  }
-  if (_loading) {
-    return "Submitting...";
+    console.error("Error:", error);
   }
   if (_error) {
-    return `Submission error! ${_error}`;
-  }
-  if (!data.getProducts.length) {
-    return <Navigate to="/products" />;
+    console.error("Error:", _error);
   }
 
-  const product = data.getProducts[0];
+  // if (data?.addProduct && _data?.moveToFolder) {
+  //   return <Navigate to="/products" />;
+  // }
 
   const onFinish = (values) => {
-    const id = product.id;
+    const uuid = uuidv4();
+
     const productInput = {
-      id: product.id,
+      id: uuid,
       title: values.product.title,
       description: values.product.description,
     };
 
-    updateProduct({ variables: { id, productInput } });
-    refetch();
-    navigate(`/product/${id}`);
+    addProduct({ variables: { productInput } });
+
+    const tripleInput = {
+      subject: "e27afe47-e26f-4796-8e25-1e2e873d708c",
+      object: uuid,
+      priority: 1,
+    };
+
+    moveToFolder({ variables: { tripleInput } });
+    navigate("/products");
   };
 
   return (
@@ -86,13 +92,6 @@ const EditProduct = () => {
             name="nest-messages"
             onFinish={onFinish}
             validateMessages={validateMessages}
-            initialValues={{
-              product: {
-                title: product.title,
-                description: product.description,
-                price: product.price,
-              },
-            }}
           >
             <Form.Item
               name={["product", "title"]}
@@ -112,8 +111,8 @@ const EditProduct = () => {
               <Input />
             </Form.Item>
             <Form.Item
-              name={["product", "type"]}
-              label="Type"
+              name={["product", "something"]}
+              label="Something"
               //rules={[{ type: "number", min: 0, max: 99 }]}
             >
               <InputNumber />
@@ -133,4 +132,4 @@ const EditProduct = () => {
   );
 };
 
-export default EditProduct;
+export default AddProduct;
