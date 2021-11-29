@@ -1,36 +1,29 @@
 import React from "react";
-import { gql, useMutation, useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { Descriptions, Image, Button, Row, Col } from "antd";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
-
-const GET_PRODUCT = gql`
-  query Query($uuIds: [ID]!) {
-    getProducts(uuIds: $uuIds) {
-      id
-      title
-      description
-      price
-    }
-  }
-`;
-
-const DELETE_PRODUCT = gql`
-  mutation Mutation($id: ID!) {
-    removeProduct(id: $id)
-  }
-`;
+import {
+  GET_CATALOG,
+  GET_PRODUCT,
+  DELETE_PRODUCT,
+} from "../../apollo/queries/product/productQueries";
 
 const Product = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const { loading, error, data, refetch } = useQuery(GET_PRODUCT, {
+  const { loading, error, data } = useQuery(GET_PRODUCT, {
     variables: { uuIds: [id] },
   });
-  const [
-    removeProduct,
-    { loading: _loading, error: _error, data: _data },
-  ] = useMutation(DELETE_PRODUCT);
+  const [removeProduct, { loading: _loading, error: _error }] = useMutation(
+    DELETE_PRODUCT,
+    {
+      refetchQueries: [
+        GET_CATALOG, // DocumentNode object parsed with gql
+        ["catalog"], // Query name
+      ],
+    }
+  );
   if (loading || _loading) {
     return <p>Loading...</p>;
   }
@@ -40,16 +33,13 @@ const Product = () => {
   if (!data.getProducts.length) {
     return <Navigate to="/products" />;
   }
-  if (_data?.removeProduct) {
-    return <Navigate to={"/products"} />
-  }
 
   const onDeleteProduct = (id) => {
     const conf = window.confirm("Are you sure you want to delete?");
     if (!conf) return;
 
     removeProduct({ variables: { id: id } });
-    // refetch()
+    navigate("/products");
   };
 
   const product = data.getProducts[0];
