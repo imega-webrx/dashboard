@@ -4,23 +4,11 @@ import { extractCritical } from "emotion-server";
 import { renderToStringWithData } from "@apollo/client/react/ssr";
 
 //import App from "./App";
-//import Aside from "./features/Aside/Aside";
-// import TopHeader from "./features/Header/Header";
-// import { Link } from "react-router-dom";
-import Main from "./Main.page";
-// import Normalize from "./Normalize";
+// import Main from "./Main.page";
 const fs = require("fs");
 
-// const Main = () => {
-//   return (
-//     <React.Fragment>
-//       <div>QWE</div>
-//       <div>HOHO</div>
-//     </React.Fragment>
-//   );
-// };
 
-const r = renderToStringWithData(<Main />).then((content) => {
+const r = renderToStringWithData(<h5>ITS SSR</h5>).then((content) => {
   const { ids, css, html } = extractCritical(content);
 
   return ReactDOM.renderToString(

@@ -1,6 +1,7 @@
 module.exports = {
     presets: [
         "@babel/preset-typescript",
+        "@babel/preset-react",
         [
             "@babel/preset-env",
             {
@@ -31,10 +32,6 @@ module.exports = {
         "@babel/plugin-proposal-nullish-coalescing-operator",
         ["@babel/plugin-proposal-class-properties", { loose: true }],
         "@babel/plugin-transform-runtime",
-        // [
-        //     "@babel/plugin-proposal-object-rest-spread",
-        //     { loose: false, useBuiltIns: true }
-        // ],
         "transform-react-remove-prop-types",
         [
             "emotion",
