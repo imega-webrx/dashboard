@@ -16,7 +16,7 @@ app.get('/', (req, res) => {
   // const app = ReactDOMServer.renderToString(<App />);
   const app = ReactDOMServer.renderToString(<div><h1>Dashboard</h1></div>);
 
-  const indexFile = path.resolve('./public/index.html');
+  const indexFile = path.resolve('./build/index.html');
   fs.readFile(indexFile, 'utf8', (err, data) => {
     if (err) {
       console.error('Something went wrong:', err);
