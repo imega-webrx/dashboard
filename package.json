@@ -10,6 +10,8 @@
     "test": "craco test",
     "storybook": "start-storybook -p 6006 -s public",
     "storybook-build": "build-storybook -s public",
+    "build:prod": "npm-run-all --parallel build-server build",
+    "build-server": "NODE_ENV=production webpack --config webpack.server.js --mode=production",
     "build": "npm run build:ssr && npm run build:client && node build/ssr.js && rm build/ssr.js",
     "build:ssr": "webpack --config webpack.ssr.js",
     "build:client": "webpack --config webpack.client.js"
