@@ -10,5 +10,5 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: |
-          pm2 del /srv/dashboard/ecosystem.config.js
-          pm2 start /srv/dashboard/ecosystem.config.js
+          ls -l
+          pm2 list
