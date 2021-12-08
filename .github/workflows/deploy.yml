@@ -27,3 +27,9 @@ jobs:
           rm -rf $HOME/service/dashboard/instance/02/*
           cp -r * $HOME/service/dashboard/instance/02/
           DASHBOARD_PORT=18005 pm2 start --name dashboard-2 --namespace port=18005 $HOME/service/dashboard/instance/02/src/index.js -f
+
+      - name: Test instances
+        run: |
+          sleep 10
+          pm2 logs --raw --nostream dashboard-1
+          pm2 logs --raw --nostream dashboard-2
