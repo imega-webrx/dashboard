@@ -7,9 +7,8 @@ on:
 jobs:
   build:
     runs-on: self-hosted
-
     steps:
-      — uses: actions/checkout@v2
-      — run: |
+      - uses: actions/checkout@v2
+      - run: |
         pm2 del /srv/dashboard/ecosystem.config.js
         pm2 start /srv/dashboard/ecosystem.config.js
