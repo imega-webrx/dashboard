@@ -16,12 +16,12 @@ jobs:
 
       - name: Deploy 01 instance
         run: |
-          rm -r $HOME/service/dashboard/instance/01/*
+          rm -rf $HOME/service/dashboard/instance/01/*
           cp -r * $HOME/service/dashboard/instance/01/
           DASHBOARD_PORT=18004 pm2 start $HOME/service/dashboard/instance/01/ecosystem.config.cjs
 
       - name: Deploy 02 instance
         run: |
-          rm -r $HOME/service/dashboard/instance/02/*
+          rm -rf $HOME/service/dashboard/instance/02/*
           cp -r * $HOME/service/dashboard/instance/02/
           DASHBOARD_PORT=18005 pm2 start $HOME/service/dashboard/instance/02/ecosystem.config.cjs
