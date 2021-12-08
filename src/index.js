@@ -1,11 +1,11 @@
-import path from "path";
-import fs from "fs";
+// import path from "path";
+// import fs from "fs";
 
-import React from "react";
+// import React from "react";
 import express from "express";
-import ReactDOMServer from "react-dom/server";
+// import ReactDOMServer from "react-dom/server";
 
-import App from "../src/App";
+// import App from "../src/App";
 
 const PORT = process.env.DASHBOARD_PORT || 9000;
 const app = express();
@@ -30,7 +30,7 @@ app.get("/", (req, res) => {
     res.send("Hello World!");
 });
 
-app.use(express.static("./build"));
+// app.use(express.static("./build"));
 
 app.listen(PORT, () => {
     console.log(`Server is listening on port ${PORT}`);
