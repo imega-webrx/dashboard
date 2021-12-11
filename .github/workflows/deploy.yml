@@ -19,14 +19,18 @@ jobs:
         run: |
           pm2 del dashboard-1 || echo 'skip'
           mv -v build $HOME/service/dashboard/instance/01/${GITHUB_SHA:0:12}
-          DASHBOARD_PORT=18004 pm2 start --name dashboard-1 --namespace port=18004 $HOME/service/dashboard/instance/01/${GITHUB_SHA:0:12}/server.js -f
+          DASHBOARD_PORT=18004 pm2 start --name dashboard-1 \
+            --namespace port=18004 \
+            $HOME/service/dashboard/instance/01/${GITHUB_SHA:0:12}/server.js -f
           sleep 10
           STATUS=$(pm2 jlist | jq -r '.[] | {"name": .name, "status": .pm2_env.status} | select(.name=="dashboard-1") | .status')
           if [ "$STATUS" == "errored" ]; then
             pm2 logs --raw --nostream dashboard-1
             exit 1
           else
-            find ~/service/dashboard/instance/01/* -type d -not -name ${GITHUB_SHA:0:12} -print0 | xargs -0  -I {} rm -rv {}
+            find ~/service/dashboard/instance/01/* -type d \
+              -not -name ${GITHUB_SHA:0:12} -print0 | \
+              xargs -0  -I {} rm -rv {}
           fi
 
       - name: Deploy 02 instance
@@ -34,7 +38,19 @@ jobs:
           pm2 del dashboard-2 || echo 'skip'
           rm -rf $HOME/service/dashboard/instance/02/*
           cp -r * $HOME/service/dashboard/instance/02/
-          DASHBOARD_PORT=18005 pm2 start --name dashboard-2 --namespace port=18005 $HOME/service/dashboard/instance/02/src/index.js -f
+          DASHBOARD_PORT=18005 pm2 start --name dashboard-2 \
+            --namespace port=18005 \
+            $HOME/service/dashboard/instance/02/src/index.js -f
+          sleep 10
+          STATUS=$(pm2 jlist | jq -r '.[] | {"name": .name, "status": .pm2_env.status} | select(.name=="dashboard-2") | .status')
+          if [ "$STATUS" == "errored" ]; then
+            pm2 logs --raw --nostream dashboard-2
+            exit 1
+          else
+            find ~/service/dashboard/instance/02/* -type d \
+              -not -name ${GITHUB_SHA:0:12} -print0 | \
+              xargs -0  -I {} rm -rv {}
+          fi
 
       - name: Test instances
         run: |
