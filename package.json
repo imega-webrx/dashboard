@@ -15,7 +15,8 @@
     "build": "npm run build:ssr && npm run build:client && node build/ssr.js && rm build/ssr.js",
     "build:ssr": "webpack --config webpack.ssr.js",
     "build:client": "webpack --config webpack.client.js",
-    "build:server": "webpack --display-modules --config webpack.server.js"
+    "build:server": "webpack --display-modules --config webpack.server.js",
+    "build:mserver": "swc src/server.js -o build/server.mjs"
   },
   "eslintConfig": {
     "extends": [
@@ -89,6 +90,8 @@
     "@storybook/preset-ant-design": "^0.0.2",
     "@storybook/preset-create-react-app": "^3.2.0",
     "@storybook/react": "^6.3.12",
+    "@swc/cli": "^0.1.53",
+    "@swc/core": "^1.2.119",
     "babel-jest": "^26.6.3",
     "babel-loader": "^8.1.0",
     "babel-plugin-graphql-tag": "^3.2.0",
