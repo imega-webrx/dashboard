@@ -27,6 +27,8 @@ const tmpl = `<!DOCTYPE html>
 </html>`;
 
 app.get("*", (req, res) => {
+    console.log("=====", req);
+
     const appTemplate = ReactDOMServer.renderToString(
         <StaticRouter location={req.url}>
             <App />
