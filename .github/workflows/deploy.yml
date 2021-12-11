@@ -18,9 +18,11 @@ jobs:
       - name: Deploy 01 instance
         run: |
           pm2 del dashboard-1 || echo 'skip'
-          rm -rf $HOME/service/dashboard/instance/01/*
-          cp -r build $HOME/service/dashboard/instance/01
-          DASHBOARD_PORT=18004 pm2 start --name dashboard-1 --namespace port=18004 $HOME/service/dashboard/instance/01/build/server.js -f
+          mv -v build $HOME/service/dashboard/instance/01/${GITHUB_SHA:0:12}
+          DASHBOARD_PORT=18004 pm2 start --name dashboard-1 --namespace port=18004 $HOME/service/dashboard/instance/01/${GITHUB_SHA:0:12}/server.js -f
+          sleep 10
+          STATUS=$(pm2 jlist | jq -r '.[] | {"name": .name, "status": .pm2_env.status} | select(.name=="dashboard-1") | .status')
+          echo $STATUS
 
       - name: Deploy 02 instance
         run: |
