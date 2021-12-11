@@ -22,7 +22,12 @@ jobs:
           DASHBOARD_PORT=18004 pm2 start --name dashboard-1 --namespace port=18004 $HOME/service/dashboard/instance/01/${GITHUB_SHA:0:12}/server.js -f
           sleep 10
           STATUS=$(pm2 jlist | jq -r '.[] | {"name": .name, "status": .pm2_env.status} | select(.name=="dashboard-1") | .status')
-          echo $STATUS
+          if [ "$STATUS" == "errored" ]; then
+            pm2 logs --raw --nostream dashboard-1
+            exit 1
+          else
+            find ~/service/dashboard/instance/01/* -type d -not -name ${GITHUB_SHA:0:12} -print0 | xargs -0  -I {} rm -rv {}
+          fi
 
       - name: Deploy 02 instance
         run: |
