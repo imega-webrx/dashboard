@@ -2,7 +2,6 @@
   "name": "dashboard",
   "version": "0.1.0",
   "private": true,
-  "type": "module",
   "scripts": {
     "dev:build-server": "NODE_ENV=development webpack --config webpack.server.js --mode=development -w",
     "dev:start": "nodemon ./server-build/index.js",
