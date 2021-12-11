@@ -4,11 +4,12 @@ import { extractCritical } from "emotion-server";
 import { renderToStringWithData } from "@apollo/client/react/ssr";
 
 //import App from "./App";
-// import Main from "./Main.page";
+import Main from "./Main.page";
 const fs = require("fs");
+const path = require("path");
 
 
-const r = renderToStringWithData(<h5>ITS SSR</h5>).then((content) => {
+const r = renderToStringWithData(<Main />).then((content) => {
   const { ids, css, html } = extractCritical(content);
 
   return ReactDOM.renderToString(
@@ -54,7 +55,7 @@ const r = renderToStringWithData(<h5>ITS SSR</h5>).then((content) => {
 });
 
 r.then((res) => {
-  fs.writeFile("./build/index.html", `<!DOCTYPE html>${res}`, function (err) {
+  fs.writeFile(path.resolve(__dirname, "../build/index.html"), `<!DOCTYPE html>${res}`, function (err) {
     if (err) {
       return console.error(err);
     }
