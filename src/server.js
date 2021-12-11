@@ -4,8 +4,9 @@
 import React from "react";
 import express from "express";
 import ReactDOMServer from "react-dom/server";
+import { StaticRouter } from "react-router-dom/server";
 
-// import App from "../src/App";
+import App from "./App";
 
 const PORT = process.env.DASHBOARD_PORT || 9000;
 const app = express();
@@ -25,12 +26,11 @@ const tmpl = `<!DOCTYPE html>
   </body>
 </html>`;
 
-app.get("/", (req, res) => {
-    // const app = ReactDOMServer.renderToString(<App />);
+app.get("*", (req, res) => {
     const appTemplate = ReactDOMServer.renderToString(
-        <div>
-            <h1>Dashboard - 2</h1>
-        </div>
+        <StaticRouter location={req.url}>
+            <App />
+        </StaticRouter>
     );
 
     //   const indexFile = path.resolve('./build/index.html');
