@@ -1,0 +1,21 @@
+name: Pull request
+on: [pull_request]
+
+jobs:
+  eslint:
+    name: runner / eslint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: eslint
+        uses: reviewdog/action-eslint@v1
+        with:
+          reporter: github-pr-review
+          eslint_flags: "src/"
+
+      - name: test compile
+        uses: actions/setup-node@v2
+        with:
+          node-version: 15.10.0
+        run: npm ci
+        run: npm run build:server

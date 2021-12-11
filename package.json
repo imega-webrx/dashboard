@@ -15,7 +15,8 @@
     "build-server": "NODE_ENV=production webpack --config webpack.server.js --mode=production",
     "build": "npm run build:ssr && npm run build:client && node build/ssr.js && rm build/ssr.js",
     "build:ssr": "webpack --config webpack.ssr.js",
-    "build:client": "webpack --config webpack.client.js"
+    "build:client": "webpack --config webpack.client.js",
+    "build:server": "webpack --display-modules --config webpack.server.js"
   },
   "eslintConfig": {
     "extends": [
