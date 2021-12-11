@@ -13,13 +13,14 @@ jobs:
       - name: Build
         run: |
           npm ci
+          npm run build:server
 
       - name: Deploy 01 instance
         run: |
           pm2 del dashboard-1 || echo 'skip'
           rm -rf $HOME/service/dashboard/instance/01/*
-          cp -r * $HOME/service/dashboard/instance/01/
-          DASHBOARD_PORT=18004 pm2 start --name dashboard-1 --namespace port=18004 $HOME/service/dashboard/instance/01/src/index.js -f
+          cp -r $HOME/service/dashboard/instance/01/build $HOME/service/dashboard/instance/01
+          DASHBOARD_PORT=18004 pm2 start --name dashboard-1 --namespace port=18004 $HOME/service/dashboard/instance/01/build/server.js -f
 
       - name: Deploy 02 instance
         run: |
