@@ -29,7 +29,7 @@ app.get("/", (req, res) => {
     // const app = ReactDOMServer.renderToString(<App />);
     const appTemplate = ReactDOMServer.renderToString(
         <div>
-            <h1>Dashboard</h1>
+            <h1>Dashboard - 2</h1>
         </div>
     );
 
