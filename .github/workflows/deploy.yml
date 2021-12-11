@@ -62,9 +62,3 @@ jobs:
               -not -name ${GITHUB_SHA:0:12} -print0 | \
               xargs -0  -I {} rm -rv {}
           fi
-
-      - name: Test instances
-        run: |
-          sleep 10
-          pm2 logs --raw --nostream dashboard-1
-          pm2 logs --raw --nostream dashboard-2
