@@ -4,6 +4,7 @@
 import React from "react";
 import express from "express";
 import ReactDOMServer from "react-dom/server";
+import { StaticRouter } from "react-router-dom/server";
 
 import App from "./App";
 
@@ -25,13 +26,12 @@ const tmpl = `<!DOCTYPE html>
   </body>
 </html>`;
 
-app.get("/", (req, res) => {
-    const appTemplate = ReactDOMServer.renderToString(<App />);
-    // const appTemplate = ReactDOMServer.renderToString(
-    // <div>
-    // <h1>Dashboard - 2</h1>
-    // </div>
-    // );
+app.get("*", (req, res) => {
+    const appTemplate = ReactDOMServer.renderToString(
+        <StaticRouter location={req.url}>
+            <App />
+        </StaticRouter>
+    );
 
     //   const indexFile = path.resolve('./build/index.html');
     //   fs.readFile(indexFile, 'utf8', (err, data) => {
