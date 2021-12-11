@@ -19,3 +19,9 @@ $ node build/server.js
 $ npm run build:mserver
 $ node --experimental-specifier-resolution=node build/server.mjs
 ```
+
+### Start development
+
+```bash
+$ npm run dev
+```
