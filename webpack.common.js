@@ -26,7 +26,6 @@ const configRules = {
             },
         ],
     },
-
     devServer: {
         static: "build",
         watchContentBase: true,
