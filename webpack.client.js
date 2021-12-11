@@ -5,7 +5,7 @@ const webpack = require("webpack");
 
 module.exports = Object.assign({}, configRules, {
     entry: {
-        client: "./src/index.js",
+        client: "./src/client.js",
     },
     target: "web",
     mode: "production",
