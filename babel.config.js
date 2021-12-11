@@ -20,6 +20,7 @@ module.exports = {
         ],
     ],
     plugins: [
+        "react-require",
         "babel-plugin-macros",
         "@babel/plugin-transform-react-jsx",
         ["babel-plugin-graphql-tag", { strip: true }],
