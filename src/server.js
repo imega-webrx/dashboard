@@ -26,11 +26,10 @@ const tmpl = `<!DOCTYPE html>
   </body>
 </html>`;
 
-app.get("*", (req, res) => {
+app.get("/dashboard/*", (req, res) => {
     console.log("=====", req.url);
-
     const appTemplate = ReactDOMServer.renderToString(
-        <StaticRouter location={"/dashboard/"}>
+        <StaticRouter location={req.url} basename="/dashboard">
             <App />
         </StaticRouter>
     );
