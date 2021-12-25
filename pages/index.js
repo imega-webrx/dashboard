@@ -8,12 +8,17 @@ import "../src/index.less";
 const MainPage = (props) => {
     return (
         <Layout {...props}>
-            <Table dataSource={props.folders} columns={columns} />
+            <Table dataSource={props.catalog} columns={columns} />
         </Layout>
     );
 };
 
 const columns = [
+    {
+        title: "__typename",
+        dataIndex: "__typename",
+        key: "__typename",
+    },
     {
         title: "Title",
         dataIndex: "title",
@@ -31,11 +36,20 @@ export async function getServerSideProps() {
     const { data } = await client
         .query({
             query: gql`
-                query GetFolders($in: [ID]!) {
-                    getFolders(uuIds: $in) {
-                        id
-                        title
-                        description
+                query catalog($id: ID) {
+                    catalog(id: $id) {
+                        ... on Folder {
+                            __typename
+                            id
+                            title
+                            description
+                        }
+                        ... on Product {
+                            __typename
+                            id
+                            title
+                            description
+                        }
                     }
                 }
             `,
@@ -46,12 +60,12 @@ export async function getServerSideProps() {
         })
         .catch((e) => {
             console.log(e);
-            return { data: { getFolders: [] } };
+            return { data: { catalog: [] } };
         });
 
     return {
         props: {
-            folders: data.getFolders,
+            catalog: data.catalog,
             currentFolder: rootFolder,
         },
     };
