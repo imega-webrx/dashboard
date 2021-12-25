@@ -2,7 +2,7 @@ const withAntdLess = require("next-plugin-antd-less");
 
 module.exports = {
     distDir: "build",
-    basePath: "/dashboard",
+    basePath: process.env.NODE_ENV === "production" ? "/dashboard" : "",
     ...withAntdLess({
         lessVarsFilePathAppendToEndOfContent: false, // optional
         cssLoaderOptions: {
