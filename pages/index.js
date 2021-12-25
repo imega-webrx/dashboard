@@ -21,6 +21,7 @@ const columns = [
     },
     {
         title: "Description",
+        dataIndex: "description",
         key: "description",
     },
 ];
