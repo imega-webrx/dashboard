@@ -25,7 +25,7 @@ jobs:
             --namespace port=18004 \
             --cwd $HOME/service/dashboard/instance/01/${GITHUB_SHA:0:12} \
             -- start
-          sleep 20
+          sleep 10
           STATUS=$(pm2 jlist | jq -r '.[] | {"name": .name, "status": .pm2_env.status} | select(.name=="dashboard-1") | .status')
           if [ "$STATUS" == "errored" ]; then
             rm -rf $HOME/service/dashboard/instance/01/${GITHUB_SHA:0:12}
