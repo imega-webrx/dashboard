@@ -1,43 +1,4 @@
 module.exports = {
-    presets: [
-        "@babel/preset-typescript",
-        "@babel/preset-react",
-        [
-            "@babel/preset-env",
-            {
-                corejs: { version: 3, proposals: false },
-                useBuiltIns: "entry",
-                targets: {
-                    node: "current",
-                    browsers: [
-                        "Chrome >= 71",
-                        "iOS >= 11",
-                        "Safari >= 11",
-                        "Firefox >= 60",
-                    ],
-                },
-            },
-        ],
-    ],
-    plugins: [
-        "react-require",
-        "babel-plugin-macros",
-        "@babel/plugin-transform-react-jsx",
-        ["babel-plugin-graphql-tag", { strip: true }],
-        "@babel/plugin-proposal-optional-chaining",
-        "@babel/plugin-proposal-nullish-coalescing-operator",
-        ["@babel/plugin-proposal-class-properties", { loose: true }],
-        "@babel/plugin-transform-runtime",
-        "transform-react-remove-prop-types",
-        [
-            "emotion",
-            {
-                sourceMap: false,
-                autoLabel: false,
-                labelFormat: "[local]",
-                cssPropOptimization: true,
-            },
-        ],
-        // ["import", { libraryName: "antd", style: "true" }],
-    ],
+    presets: ["next/babel"],
+    plugins: [["import", { libraryName: "antd", style: true }]],
 };
