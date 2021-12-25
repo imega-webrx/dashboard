@@ -54,7 +54,7 @@ export async function getServerSideProps() {
                 }
             `,
             variables: {
-                in: [rootFolder],
+                id: rootFolder,
             },
             errorPolicy: "all",
         })
