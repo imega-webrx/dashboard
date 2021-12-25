@@ -37,17 +37,16 @@ jobs:
               -- start
             exit 1
           else
-            echo ===========================
-            # find $HOME/service/dashboard/instance/01/* -type d \
-            #   -not -name ${GITHUB_SHA:0:12} -print0 | \
-            #   xargs -0 -I {} rm -r {}
+            find $HOME/service/dashboard/instance/01/* -maxdepth 1 \
+              -name ${GITHUB_SHA:0:12} -prune -o -type d -print0 | \
+              xargs -0 -I {} rm -r {}
           fi
 
       - name: Deploy 02 instance
         run: |
           pm2 del dashboard-2 || echo 'skip'
           mkdir -p $HOME/service/dashboard/instance/02
-          cp -r build $HOME/service/dashboard/instance/02/${GITHUB_SHA:0:12}
+          cp -r . $HOME/service/dashboard/instance/02/${GITHUB_SHA:0:12}
           PORT=18005 pm2 start npm --name dashboard-2 \
             --namespace port=18005 \
             --cwd $HOME/service/dashboard/instance/02/${GITHUB_SHA:0:12} \
@@ -64,7 +63,7 @@ jobs:
               -- start
             exit 1
           else
-            find ~/service/dashboard/instance/02/* -type d \
-              -not -name ${GITHUB_SHA:0:12} -print0 | \
-              xargs -0  -I {} rm -r {}
+            find $HOME/service/dashboard/instance/02/* -maxdepth 1 \
+              -name ${GITHUB_SHA:0:12} -prune -o -type d -print0 | \
+              xargs -0 -I {} rm -r {}
           fi
