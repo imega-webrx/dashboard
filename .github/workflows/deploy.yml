@@ -19,7 +19,7 @@ jobs:
         run: |
           pm2 del dashboard-1 || echo 'skip'
           mkdir -p $HOME/service/dashboard/instance/01
-          cp -rv build $HOME/service/dashboard/instance/01/${GITHUB_SHA:0:12}
+          cp -rv . $HOME/service/dashboard/instance/01/${GITHUB_SHA:0:12}
           PORT=18004 pm2 start --name dashboard-1 \
             --namespace port=18004 \
             --cwd $HOME/service/dashboard/instance/01/${GITHUB_SHA:0:12} \
