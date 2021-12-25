@@ -1,7 +1,8 @@
 import Head from "next/head";
-import { Layout, Menu } from "antd";
+import { Layout } from "antd";
 
 import "../index.less";
+import Menu from "./Menu";
 
 const { Header, Content } = Layout;
 
@@ -12,9 +13,7 @@ const LayoutPage = (props) => (
             <link rel="icon" href="/favicon.ico" />
         </Head>
         <Header>
-            <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["1"]}>
-                <Menu.Item key={1}>Каталог</Menu.Item>
-            </Menu>
+            <Menu />
         </Header>
         <Content style={{ padding: "2em" }}>{props.children}</Content>
     </Layout>
