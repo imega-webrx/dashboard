@@ -24,12 +24,7 @@ const MainMenu = (props) => {
 
     return (
         <React.Fragment>
-            <Menu
-                theme="dark"
-                onClick={handleClick}
-                mode="horizontal"
-                defaultSelectedKeys={["1"]}
-            >
+            <Menu theme="dark" onClick={handleClick} mode="horizontal">
                 <Menu.Item key={"catalog"}>Catalog</Menu.Item>
                 <Menu.Item
                     key={addFolderAction}
