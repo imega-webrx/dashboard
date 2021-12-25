@@ -38,8 +38,7 @@ jobs:
             exit 1
           else
             find $HOME/service/dashboard/instance/01/* -maxdepth 1 \
-              -name ${GITHUB_SHA:0:12} -prune -o -type d -print0 | \
-              xargs -0 -I {} rm -r {}
+              -name ${GITHUB_SHA:0:12} -prune -o -type d -exec rm -rf {} +
           fi
 
       - name: Deploy 02 instance
@@ -64,6 +63,5 @@ jobs:
             exit 1
           else
             find $HOME/service/dashboard/instance/02/* -maxdepth 1 \
-              -name ${GITHUB_SHA:0:12} -prune -o -type d -print0 | \
-              xargs -0 -I {} rm -r {}
+              -name ${GITHUB_SHA:0:12} -prune -o -type d -exec rm -rf {} +
           fi
