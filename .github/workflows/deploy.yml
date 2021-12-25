@@ -19,12 +19,12 @@ jobs:
         run: |
           pm2 del dashboard-1 || echo 'skip'
           mkdir -p $HOME/service/dashboard/instance/01
-          cp -rv . $HOME/service/dashboard/instance/01/${GITHUB_SHA:0:12}
+          cp -r . $HOME/service/dashboard/instance/01/${GITHUB_SHA:0:12}
           PORT=18004 pm2 start npm --name dashboard-1 \
             --namespace port=18004 \
             --cwd $HOME/service/dashboard/instance/01/${GITHUB_SHA:0:12} \
             -- start
-          sleep 10
+          sleep 20
           STATUS=$(pm2 jlist | jq -r '.[] | {"name": .name, "status": .pm2_env.status} | select(.name=="dashboard-1") | .status')
           if [ "$STATUS" == "errored" ]; then
             rm -rf $HOME/service/dashboard/instance/01/${GITHUB_SHA:0:12}
@@ -36,9 +36,10 @@ jobs:
               -- start
             exit 1
           else
-            find ~/service/dashboard/instance/01/* -type d \
+            echo ===========================
+            find $HOME/service/dashboard/instance/01/* -type d \
               -not -name ${GITHUB_SHA:0:12} -print0 | \
-              xargs -0  -I {} rm -r {}
+              xargs -0 -I {} rm -r {}
           fi
 
       - name: Deploy 02 instance
