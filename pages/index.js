@@ -1,6 +1,7 @@
 import { gql } from "@apollo/client";
 import client from "../src/apollo-client";
 import { Table } from "antd";
+import { FolderOutlined, FileTextOutlined } from "@ant-design/icons";
 
 import Layout from "../src/Page/Layout";
 import "../src/index.less";
@@ -15,9 +16,11 @@ const MainPage = (props) => {
 
 const columns = [
     {
-        title: "__typename",
+        title: "",
         dataIndex: "__typename",
-        key: "__typename",
+        width: "1em",
+        render: (type) =>
+            type === "Folder" ? <FolderOutlined /> : <FileTextOutlined />,
     },
     {
         title: "Title",
@@ -60,7 +63,24 @@ export async function getServerSideProps() {
         })
         .catch((e) => {
             console.log(e);
-            return { data: { catalog: [] } };
+            return {
+                data: {
+                    catalog: [
+                        {
+                            __typename: "Product",
+                            id: "1121312",
+                            title: "sdfsdf",
+                            description: "1234314",
+                        },
+                        {
+                            __typename: "Folder",
+                            id: "1121312",
+                            title: "sdfsdf",
+                            description: "1234314",
+                        },
+                    ],
+                },
+            };
         });
 
     return {
