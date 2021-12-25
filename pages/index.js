@@ -46,13 +46,13 @@ export async function getServerSideProps() {
         })
         .catch((e) => {
             console.log(e);
-            return { data: { getFolders: [], currentFolder: rootFolder } };
+            return { data: { getFolders: [] } };
         });
 
     return {
         props: {
             folders: data.getFolders,
-            currentFolder: data.currentFolder,
+            currentFolder: rootFolder,
         },
     };
 }
