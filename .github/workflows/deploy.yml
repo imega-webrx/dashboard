@@ -27,7 +27,7 @@ jobs:
           sleep 10
           STATUS=$(pm2 jlist | jq -r '.[] | {"name": .name, "status": .pm2_env.status} | select(.name=="dashboard-1") | .status')
           if [ "$STATUS" == "errored" ]; then
-            rm -rfv $HOME/service/dashboard/instance/01/${GITHUB_SHA:0:12}
+            rm -rf $HOME/service/dashboard/instance/01/${GITHUB_SHA:0:12}
             pm2 logs --raw --nostream dashboard-1
             PREV=$(find ~/service/dashboard/instance/01/* -maxdepth 1 -type d -printf '%f\n')
             PORT=18004 pm2 start --name dashboard-1 \
@@ -38,22 +38,22 @@ jobs:
           else
             find ~/service/dashboard/instance/01/* -type d \
               -not -name ${GITHUB_SHA:0:12} -print0 | \
-              xargs -0  -I {} rm -rv {}
+              xargs -0  -I {} rm -r {}
           fi
 
       - name: Deploy 02 instance
         run: |
           pm2 del dashboard-2 || echo 'skip'
           mkdir -p $HOME/service/dashboard/instance/02
-          cp -rv build $HOME/service/dashboard/instance/02/${GITHUB_SHA:0:12}
+          cp -r build $HOME/service/dashboard/instance/02/${GITHUB_SHA:0:12}
           PORT=18005 pm2 start npm --name dashboard-2 \
             --namespace port=18005 \
-            --cwd $HOME/service/dashboard/instance/01/${GITHUB_SHA:0:12} \
+            --cwd $HOME/service/dashboard/instance/02/${GITHUB_SHA:0:12} \
             -- start
           sleep 10
           STATUS=$(pm2 jlist | jq -r '.[] | {"name": .name, "status": .pm2_env.status} | select(.name=="dashboard-2") | .status')
           if [ "$STATUS" == "errored" ]; then
-            rm -rfv $HOME/service/dashboard/instance/02/${GITHUB_SHA:0:12}
+            rm -rf $HOME/service/dashboard/instance/02/${GITHUB_SHA:0:12}
             pm2 logs --raw --nostream dashboard-2
             PREV=$(find ~/service/dashboard/instance/02/* -maxdepth 1 -type d -printf '%f\n')
             PORT=18005 pm2 start --name dashboard-2 \
@@ -64,5 +64,5 @@ jobs:
           else
             find ~/service/dashboard/instance/02/* -type d \
               -not -name ${GITHUB_SHA:0:12} -print0 | \
-              xargs -0  -I {} rm -rv {}
+              xargs -0  -I {} rm -r {}
           fi
