@@ -12,7 +12,6 @@ const PORT = process.env.DASHBOARD_PORT || 9000;
 const app = express();
 
 app.get("/", (req, res) => {
-    // const appTemplate = ReactDOMServer.renderToString(<Main />);
     const appTemplate = ReactDOMServer.renderToString(
         <div>
             <h1>Dashboard</h1>

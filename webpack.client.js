@@ -2,6 +2,7 @@ const TerserPlugin = require("terser-webpack-plugin");
 const path = require("path");
 const configRules = require("./webpack.common");
 const webpack = require("webpack");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = Object.assign({}, configRules, {
     entry: {
@@ -30,8 +31,13 @@ module.exports = Object.assign({}, configRules, {
         ],
     },
     plugins: [
+        new MiniCssExtractPlugin(),
         new webpack.DefinePlugin({
             "process.env.STORYBOOK_GRAPHQL_HOST": JSON.stringify("/graphql"),
         }),
+        new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /ru|en-gb/),
     ],
+    stats: {
+        maxModules: Number.MAX_VALUE,
+    },
 });

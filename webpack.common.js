@@ -1,12 +1,45 @@
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+
 const configRules = {
     module: {
         rules: [
             {
+                test: /\.less$/i,
+                use: [
+                    // { loader: "style-loader" },
+                    MiniCssExtractPlugin.loader,
+                    {
+                        loader: "css-loader",
+                        options: {
+                            sourceMap: true,
+                            modules: false,
+                        },
+                    },
+                    {
+                        loader: "less-loader",
+                        options: {
+                            lessOptions: {
+                                javascriptEnabled: true,
+                            },
+                        },
+                    },
+                ],
+            },
+            {
                 test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
-                use: {
-                    loader: "babel-loader",
-                },
+                loader: "babel-loader",
+                // options: {
+                //     plugins: [
+                //         [
+                //             "import",
+                //             {
+                //                 libraryName: "antd",
+                //                 style: true,
+                //             },
+                //         ],
+                //     ],
+                // },
             },
             {
                 test: /\.svg$/,

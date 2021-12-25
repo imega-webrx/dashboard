@@ -1,5 +1,5 @@
 import React from "react";
-import "./App.css";
+import "./App.less";
 import { Layout } from "antd";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { ApolloProvider } from "@apollo/client";

@@ -38,5 +38,6 @@ module.exports = {
                 cssPropOptimization: true,
             },
         ],
+        // ["import", { libraryName: "antd", style: "true" }],
     ],
 };
