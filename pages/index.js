@@ -1,17 +1,29 @@
 import { gql } from "@apollo/client";
 import client from "../src/apollo-client";
-import { Button } from "antd";
+import { Table } from "antd";
 
 import Layout from "../src/Page/Layout";
 import "../src/index.less";
 
-const MainPage = ({ folders }) => (
-    <Layout>
-        <h1>
-            Main<Button type="primary">{folders[0].title}</Button>
-        </h1>
-    </Layout>
-);
+const MainPage = ({ folders }) => {
+    return (
+        <Layout>
+            <Table dataSource={folders} columns={columns} />
+        </Layout>
+    );
+};
+
+const columns = [
+    {
+        title: "Title",
+        dataIndex: "title",
+        key: "title",
+    },
+    {
+        title: "Description",
+        key: "description",
+    },
+];
 
 export async function getServerSideProps() {
     const { data } = await client.query({
