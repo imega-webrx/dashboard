@@ -13,6 +13,7 @@ jobs:
       - name: Build
         run: |
           npm ci
+          npx next telemetry disable
           npm run build
 
       - name: Deploy 01 instance
@@ -37,9 +38,9 @@ jobs:
             exit 1
           else
             echo ===========================
-            find $HOME/service/dashboard/instance/01/* -type d \
-              -not -name ${GITHUB_SHA:0:12} -print0 | \
-              xargs -0 -I {} rm -r {}
+            # find $HOME/service/dashboard/instance/01/* -type d \
+            #   -not -name ${GITHUB_SHA:0:12} -print0 | \
+            #   xargs -0 -I {} rm -r {}
           fi
 
       - name: Deploy 02 instance
