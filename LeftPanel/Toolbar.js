@@ -1,11 +1,12 @@
 import React from "react";
-import { Button, Divider } from "antd";
+import { Button, Divider, Space } from "antd";
 import {
     AimOutlined,
     UnorderedListOutlined,
     CheckSquareOutlined,
     FolderAddOutlined,
     FileAddOutlined,
+    LinkOutlined,
     DeleteOutlined,
 } from "@ant-design/icons";
 
@@ -19,7 +20,15 @@ const ToolBar = () => (
         <Button icon={<FolderAddOutlined />}>Folder</Button>
         <Button icon={<FileAddOutlined />}>Product</Button>
         <Divider type="vertical" />
-        <Button icon={<DeleteOutlined />} type="danger" disabled>
+        <Button icon={<LinkOutlined />} disabled>
+            Link to
+        </Button>
+        <Button
+            style={{ float: "right" }}
+            icon={<DeleteOutlined />}
+            type="danger"
+            disabled
+        >
             Delete
         </Button>
     </nav>
