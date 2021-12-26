@@ -1,21 +1,19 @@
 import React from "react";
 import ToolBar from "./Toolbar";
 
-const Panel = () => {
+import { FinderMode, FolderEditorMode, ProductEditorMode } from "./Modes";
+
+const Panel = (props) => {
     const [mode, setMode] = React.useState(FinderMode);
 
     return (
         <React.Fragment>
-            <ToolBar />
+            <ToolBar currentMode={mode} onMode={setMode} />
             {mode === FinderMode && <Finder />}
             {mode === FolderEditorMode && <FolderEditorMode />}
             {mode === ProductEditorMode && <ProductEditorMode />}
         </React.Fragment>
     );
 };
-
-const FinderMode = 0;
-const FolderEditorMode = 1;
-const ProductEditorMode = 2;
 
 export default Panel;
