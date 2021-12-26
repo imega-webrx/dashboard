@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Divider, Space } from "antd";
+import { Button, Divider } from "antd";
 import {
     AimOutlined,
     UnorderedListOutlined,
@@ -12,26 +12,44 @@ import {
 
 const ToolBar = () => (
     <nav style={{ padding: "0 0 1em 0" }}>
-        <Button icon={<AimOutlined />}>Root</Button>
+        <RootBtn />
         <Divider type="vertical" />
-        <Button icon={<UnorderedListOutlined />}>Sort</Button>
-        <Button icon={<CheckSquareOutlined />}>Check</Button>
+        <SortBtn />
+        <CheckBtn />
         <Divider type="vertical" />
-        <Button icon={<FolderAddOutlined />}>Folder</Button>
-        <Button icon={<FileAddOutlined />}>Product</Button>
+        <AddFolderBtn />
+        <AddProductBtn />
         <Divider type="vertical" />
-        <Button icon={<LinkOutlined />} disabled>
-            Link to
-        </Button>
-        <Button
-            style={{ float: "right" }}
-            icon={<DeleteOutlined />}
-            type="danger"
-            disabled
-        >
-            Delete
-        </Button>
+        <LinkToBtn />
+        <DeleteBtn />
     </nav>
+);
+
+const RootBtn = () => <Button icon={<AimOutlined />}>Root</Button>;
+
+const SortBtn = () => <Button icon={<UnorderedListOutlined />}>Sort</Button>;
+
+const CheckBtn = () => <Button icon={<CheckSquareOutlined />}>Check</Button>;
+
+const AddFolderBtn = () => <Button icon={<FolderAddOutlined />}>Folder</Button>;
+
+const AddProductBtn = () => <Button icon={<FileAddOutlined />}>Product</Button>;
+
+const LinkToBtn = () => (
+    <Button icon={<LinkOutlined />} disabled>
+        Link to
+    </Button>
+);
+
+const DeleteBtn = () => (
+    <Button
+        style={{ float: "right" }}
+        icon={<DeleteOutlined />}
+        type="danger"
+        disabled
+    >
+        Delete
+    </Button>
 );
 
 export default ToolBar;
