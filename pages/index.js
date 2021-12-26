@@ -1,35 +1,17 @@
 import { gql } from "@apollo/client";
 import client from "../src/apollo-client";
-import { Table } from "antd";
-import { FolderOutlined, FileTextOutlined } from "@ant-design/icons";
 
 import Layout from "../src/Page/Layout";
 import "../src/index.less";
-import ToolBar from "../Panel/Toolbar";
+import Panel from "../Panel";
 
 const MainPage = (props) => {
     return (
         <Layout {...props}>
-            <ToolBar />
-            <Table dataSource={props.catalog} columns={columns} />
+            <Panel />
         </Layout>
     );
 };
-
-const columns = [
-    {
-        title: "",
-        dataIndex: "__typename",
-        width: "1em",
-        render: (type) =>
-            type === "Folder" ? <FolderOutlined /> : <FileTextOutlined />,
-    },
-    {
-        title: "Title",
-        dataIndex: "title",
-        key: "title",
-    },
-];
 
 export async function getServerSideProps() {
     const rootFolder = "ed4bf8f5-8b4e-435b-83cc-27feada6136a";

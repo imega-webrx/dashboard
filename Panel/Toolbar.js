@@ -10,6 +10,12 @@ import {
     DeleteOutlined,
 } from "@ant-design/icons";
 
+import ModeContext, {
+    FinderMode,
+    FolderEditorMode,
+    ProductEditorMode,
+} from "./Modes";
+
 const ToolBar = () => (
     <nav style={{ padding: "0 0 1em 0" }}>
         <RootBtn />
@@ -31,9 +37,45 @@ const SortBtn = () => <Button icon={<UnorderedListOutlined />}>Sort</Button>;
 
 const CheckBtn = () => <Button icon={<CheckSquareOutlined />}>Check</Button>;
 
-const AddFolderBtn = () => <Button icon={<FolderAddOutlined />}>Folder</Button>;
+const AddFolderBtn = () => (
+    <ModeContext.Consumer>
+        {(ctx) => (
+            <Button
+                icon={<FolderAddOutlined />}
+                onClick={clickAddFolderBtn(ctx)}
+                type={ctx.currentMode === FolderEditorMode && "primary"}
+            >
+                Folder
+            </Button>
+        )}
+    </ModeContext.Consumer>
+);
 
-const AddProductBtn = () => <Button icon={<FileAddOutlined />}>Product</Button>;
+const clickAddFolderBtn = (ctx) => () => {
+    ctx.onMode((prevMode) =>
+        prevMode === FolderEditorMode ? FinderMode : FolderEditorMode
+    );
+};
+
+const AddProductBtn = () => (
+    <ModeContext.Consumer>
+        {(ctx) => (
+            <Button
+                icon={<FileAddOutlined />}
+                onClick={clickAddProductBtn(ctx)}
+                type={ctx.currentMode === ProductEditorMode && "primary"}
+            >
+                Product
+            </Button>
+        )}
+    </ModeContext.Consumer>
+);
+
+const clickAddProductBtn = (ctx) => () => {
+    ctx.onMode((prevMode) =>
+        prevMode === ProductEditorMode ? FinderMode : ProductEditorMode
+    );
+};
 
 const LinkToBtn = () => (
     <Button icon={<LinkOutlined />} disabled>
