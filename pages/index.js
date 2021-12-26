@@ -5,7 +5,7 @@ import { FolderOutlined, FileTextOutlined } from "@ant-design/icons";
 
 import Layout from "../src/Page/Layout";
 import "../src/index.less";
-import ToolBar from "../LeftPanel/Toolbar";
+import ToolBar from "../Panel/Toolbar";
 
 const MainPage = (props) => {
     return (
