@@ -1,16 +1,11 @@
 import React from "react";
-import { Menu, Modal, Form, Input } from "antd";
+import { Menu, Form } from "antd";
 import { FolderAddOutlined } from "@ant-design/icons";
 import { v4 } from "uuid";
-
-import CurrentFolderCtx from "../src/context/CurrentFolder";
 
 const addFolderAction = "addFolder";
 
 const MainMenu = (props) => {
-    const [isFolderModalVisible, setIsFolderModalVisible] =
-        React.useState(false);
-
     const [addFolderForm] = Form.useForm();
 
     const handleClick = ({ key }) => {
@@ -21,11 +16,6 @@ const MainMenu = (props) => {
 
     const handleOk = () => {
         console.log(addFolderForm.getFieldsValue(true), v4());
-        setIsFolderModalVisible(false);
-    };
-
-    const handleCancel = () => {
-        setIsFolderModalVisible(false);
     };
 
     return (
@@ -39,46 +29,6 @@ const MainMenu = (props) => {
                     Folder
                 </Menu.Item>
             </Menu>
-            <CurrentFolderCtx.Consumer>
-                {(id) => (
-                    <Modal
-                        title={"Folder"}
-                        visible={isFolderModalVisible}
-                        onOk={handleOk}
-                        onCancel={handleCancel}
-                    >
-                        <Form
-                            form={addFolderForm}
-                            labelCol={{ span: 6 }}
-                            wrapperCol={{ span: 16 }}
-                            autoComplete="off"
-                        >
-                            <Form.Item
-                                hidden={true}
-                                name="parentid"
-                                initialValue={id}
-                            >
-                                <Input />
-                            </Form.Item>
-                            <Form.Item
-                                label="Title"
-                                name="title"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: "Please input your title!",
-                                    },
-                                ]}
-                            >
-                                <Input />
-                            </Form.Item>
-                            <Form.Item label="Description" name="description">
-                                <Input.TextArea />
-                            </Form.Item>
-                        </Form>
-                    </Modal>
-                )}
-            </CurrentFolderCtx.Consumer>
         </React.Fragment>
     );
 };
