@@ -1,15 +1,27 @@
 import { gql } from "@apollo/client";
 import client from "../src/apollo-client";
+import { Layout, Row, Col } from "antd";
 
-import Layout from "../src/Page/Layout";
-import "../src/index.less";
+import PageLayout from "../Page/Layout";
+import "../Page/index.less";
 import Panel from "../Panel";
 
 const MainPage = (props) => {
     return (
-        <Layout {...props}>
-            <Panel />
-        </Layout>
+        <PageLayout {...props}>
+            <Row>
+                <Col span={12}>
+                    <Layout.Content style={{ padding: "2em" }}>
+                        <Panel {...props} />
+                    </Layout.Content>
+                </Col>
+                <Col span={12}>
+                    <Layout.Content style={{ padding: "2em" }}>
+                        <Panel {...props} />
+                    </Layout.Content>
+                </Col>
+            </Row>
+        </PageLayout>
     );
 };
 
@@ -48,13 +60,13 @@ export async function getServerSideProps() {
                         {
                             __typename: "Product",
                             id: "1121312",
-                            title: "sdfsdf",
+                            title: "Product 1",
                             description: "1234314",
                         },
                         {
                             __typename: "Folder",
                             id: "1121312",
-                            title: "sdfsdf",
+                            title: "Folder 1",
                             description: "1234314",
                         },
                     ],

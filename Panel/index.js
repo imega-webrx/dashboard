@@ -21,7 +21,7 @@ const Panel = (props) => {
     return (
         <ModeContext.Provider value={modeCtx}>
             <ToolBar currentMode={mode} onMode={setMode} />
-            {mode === FinderMode && <Finder />}
+            {mode === FinderMode && <Finder {...props} />}
             {mode === FolderEditorMode && <FolderEditor />}
             {mode === ProductEditorMode && <ProductEditor />}
         </ModeContext.Provider>

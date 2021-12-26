@@ -3,7 +3,7 @@ import { Menu, Modal, Form, Input } from "antd";
 import { FolderAddOutlined } from "@ant-design/icons";
 import { v4 } from "uuid";
 
-import CurrentFolderCtx from "../context/CurrentFolder";
+import CurrentFolderCtx from "../src/context/CurrentFolder";
 
 const addFolderAction = "addFolder";
 
