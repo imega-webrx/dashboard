@@ -5,10 +5,12 @@ import { FolderOutlined, FileTextOutlined } from "@ant-design/icons";
 
 import Layout from "../src/Page/Layout";
 import "../src/index.less";
+import ToolBar from "../LeftPanel/Toolbar";
 
 const MainPage = (props) => {
     return (
         <Layout {...props}>
+            <ToolBar />
             <Table dataSource={props.catalog} columns={columns} />
         </Layout>
     );
@@ -26,11 +28,6 @@ const columns = [
         title: "Title",
         dataIndex: "title",
         key: "title",
-    },
-    {
-        title: "Description",
-        dataIndex: "description",
-        key: "description",
     },
 ];
 

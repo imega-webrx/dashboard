@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { Layout } from "antd";
+import { Layout, Row, Col } from "antd";
 
 import "../index.less";
 import Menu from "./Menu";
@@ -17,7 +17,18 @@ const LayoutPage = (props) => (
             <Header>
                 <Menu />
             </Header>
-            <Content style={{ padding: "2em" }}>{props.children}</Content>
+            <Row>
+                <Col span={12}>
+                    <Content style={{ padding: "2em" }}>
+                        {props.children}
+                    </Content>
+                </Col>
+                <Col span={12}>
+                    <Content style={{ padding: "2em" }}>
+                        {props.children}
+                    </Content>
+                </Col>
+            </Row>
         </Layout>
     </CurrentFolderCtx.Provider>
 );
