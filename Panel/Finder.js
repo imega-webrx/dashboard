@@ -3,18 +3,23 @@ import { Table } from "antd";
 import { FolderOutlined, FileTextOutlined } from "@ant-design/icons";
 
 import ModeContext, { FolderEditorMode } from "./Modes";
+import AppState from "../GlobalContext/AppState";
 
 const Finder = (props) => (
-    <ModeContext.Consumer>
-        {(ctx) => (
-            <Table
-                dataSource={props.catalog}
-                columns={columns}
-                onRow={onRow}
-                onHeaderRow={onHeaderRow(ctx)}
-            />
+    <AppState.Consumer>
+        {(state) => (
+            <ModeContext.Consumer>
+                {(ctx) => (
+                    <Table
+                        dataSource={props.catalog}
+                        columns={columns}
+                        onRow={onRow}
+                        onHeaderRow={onHeaderRow(ctx)}
+                    />
+                )}
+            </ModeContext.Consumer>
         )}
-    </ModeContext.Consumer>
+    </AppState.Consumer>
 );
 
 const onRow = (record, rowIndex) => {
@@ -30,7 +35,9 @@ const onRow = (record, rowIndex) => {
 };
 
 const onHeaderRow = (ctx) => () => ({
-    onClick: () => ctx.onMode(FolderEditorMode),
+    onClick: () => {
+        ctx.onMode(FolderEditorMode);
+    },
 });
 
 const columns = [

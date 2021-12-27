@@ -5,22 +5,39 @@ import { Layout, Row, Col } from "antd";
 import PageLayout from "../Page/Layout";
 import "../Page/index.less";
 import Panel from "../Panel";
+import AppState from "../GlobalContext/AppState";
 
 const MainPage = (props) => {
+    const appState = {
+        panel: {
+            left: {
+                currentFolder: {
+                    id: props.currentFolder,
+                },
+            },
+            right: {
+                currentFolder: {
+                    id: props.currentFolder,
+                },
+            },
+        },
+    };
     return (
         <PageLayout {...props}>
-            <Row>
-                <Col span={12}>
-                    <Layout.Content style={{ padding: "2em" }}>
-                        <Panel {...props} />
-                    </Layout.Content>
-                </Col>
-                <Col span={12}>
-                    <Layout.Content style={{ padding: "2em" }}>
-                        <Panel {...props} />
-                    </Layout.Content>
-                </Col>
-            </Row>
+            <AppState.Provider value={appState}>
+                <Row>
+                    <Col span={12}>
+                        <Layout.Content style={{ padding: "2em" }}>
+                            <Panel {...props} type={"left"} />
+                        </Layout.Content>
+                    </Col>
+                    <Col span={12}>
+                        <Layout.Content style={{ padding: "2em" }}>
+                            <Panel {...props} type={"right"} />
+                        </Layout.Content>
+                    </Col>
+                </Row>
+            </AppState.Provider>
         </PageLayout>
     );
 };
