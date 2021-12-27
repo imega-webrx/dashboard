@@ -2,13 +2,19 @@ import React from "react";
 import { Table } from "antd";
 import { FolderOutlined, FileTextOutlined } from "@ant-design/icons";
 
+import ModeContext, { FolderEditorMode } from "./Modes";
+
 const Finder = (props) => (
-    <Table
-        dataSource={props.catalog}
-        columns={columns}
-        onRow={onRow}
-        onHeaderRow={onHeaderRow}
-    />
+    <ModeContext.Consumer>
+        {(ctx) => (
+            <Table
+                dataSource={props.catalog}
+                columns={columns}
+                onRow={onRow}
+                onHeaderRow={onHeaderRow(ctx)}
+            />
+        )}
+    </ModeContext.Consumer>
 );
 
 const onRow = (record, rowIndex) => {
@@ -23,13 +29,9 @@ const onRow = (record, rowIndex) => {
     };
 };
 
-const onHeaderRow = (columns, index) => {
-    return {
-        onClick: () => {
-            console.log("-------", columns);
-        },
-    };
-};
+const onHeaderRow = (ctx) => () => ({
+    onClick: () => ctx.onMode(FolderEditorMode),
+});
 
 const columns = [
     {
