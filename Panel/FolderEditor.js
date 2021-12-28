@@ -39,7 +39,7 @@ const FolderEditor = (props) => {
                 onFinish={onSave}
                 initialValues={curFolder}
             >
-                <Form.Item hidden={true} name="parentid">
+                <Form.Item hidden={true} name="id">
                     <Input />
                 </Form.Item>
                 <Form.Item
