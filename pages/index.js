@@ -74,6 +74,7 @@ export async function getServerSideProps() {
             variables: {
                 id: rootFolder,
             },
+            fetchPolicy: "network-only",
             errorPolicy: "all",
         })
         .catch((e) => {
