@@ -1,6 +1,5 @@
 import React from "react";
 import { Card, Form, Input, Button } from "antd";
-import { v4 } from "uuid";
 
 import { StorageContext } from "../Storage";
 
@@ -10,15 +9,7 @@ const FolderEditor = () => {
 
     const onSave = async (all) => {
         try {
-            const { data } = await storage.addFolder({
-                variables: {
-                    input: {
-                        id: v4(),
-                        title: all.title,
-                        description: all.description,
-                    },
-                },
-            });
+            const { data } = await storage.addFolder(all);
             if (data.addFolder === true) {
                 console.log("addFolder", data);
                 return;

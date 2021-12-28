@@ -1,4 +1,5 @@
 import { gql, useMutation } from "@apollo/client";
+import { v4 } from "uuid";
 
 const InitialFolderStorage = (client) => {
     const opts = {
@@ -6,12 +7,28 @@ const InitialFolderStorage = (client) => {
         errorPolicy: "all",
     };
 
-    const [updateFolder] = useMutation(updateFolderFN, opts);
-    const [addFolder] = useMutation(addFolderFN, opts);
+    const [updateFolderFn] = useMutation(updateFolderFN, opts);
+    const [addFolderFn] = useMutation(addFolderFN, opts);
 
     return {
-        updateFolder,
-        addFolder,
+        updateFolder: (input) =>
+            updateFolderFn({
+                variables: {
+                    input: {
+                        id: v4(),
+                        ...input,
+                    },
+                },
+            }),
+        addFolder: (input) =>
+            addFolderFn({
+                variables: {
+                    input: {
+                        id: v4(),
+                        ...input,
+                    },
+                },
+            }),
     };
 };
 
