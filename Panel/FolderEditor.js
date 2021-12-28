@@ -16,8 +16,8 @@ const FolderEditor = (props) => {
 
     const onSave = async (all) => {
         try {
-            const { data } = await storage.addFolder(all);
-            if (data.addFolder === true) {
+            const { data } = await storage.saveFolder(all);
+            if (data.addFolder === true || data.updateFolder === true) {
                 console.log("addFolder", data);
                 mode.onMode(FinderMode);
                 return;

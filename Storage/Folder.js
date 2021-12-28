@@ -22,24 +22,20 @@ const InitialFolderStorage = (client) => {
 
             return data;
         },
-        updateFolder: (input) =>
-            updateFolderFn({
+        saveFolder: (input) => {
+            if (input.hasOwnProperty("id") && input.id.length > 0) {
+                return updateFolderFn({ variables: { input: input } });
+            }
+
+            return addFolderFn({
                 variables: {
                     input: {
                         id: v4(),
                         ...input,
                     },
                 },
-            }),
-        addFolder: (input) =>
-            addFolderFn({
-                variables: {
-                    input: {
-                        id: v4(),
-                        ...input,
-                    },
-                },
-            }),
+            });
+        },
     };
 };
 
