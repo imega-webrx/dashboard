@@ -1,8 +1,33 @@
 import React from "react";
 import { Card, Form, Input, Button } from "antd";
+import { v4 } from "uuid";
+
+import { StorageContext } from "../Storage";
 
 const FolderEditor = () => {
     const [form] = Form.useForm();
+    const storage = React.useContext(StorageContext);
+
+    const onSave = async (all) => {
+        try {
+            const { data } = await storage.addFolder({
+                variables: {
+                    input: {
+                        id: v4(),
+                        title: all.title,
+                        description: all.description,
+                    },
+                },
+            });
+            if (data.addFolder === true) {
+                console.log("addFolder", data);
+                return;
+            }
+            console.log("addFolder failed to add", data);
+        } catch (e) {
+            console.log("addFolder failed to add", e, data);
+        }
+    };
 
     return (
         <Card title="New folder">
@@ -11,6 +36,7 @@ const FolderEditor = () => {
                 labelCol={{ span: 6 }}
                 wrapperCol={{ span: 16 }}
                 autoComplete="off"
+                onFinish={onSave}
             >
                 <Form.Item hidden={true} name="parentid">
                     <Input />

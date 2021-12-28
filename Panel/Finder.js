@@ -2,7 +2,7 @@ import React from "react";
 import { Table } from "antd";
 import { FolderOutlined, FileTextOutlined } from "@ant-design/icons";
 
-import ModeContext, { FolderEditorMode } from "./Modes";
+import ModeContext, { FolderEditorMode, ProductEditorMode } from "./Modes";
 import AppState from "../GlobalContext/AppState";
 
 const Finder = (props) => (
@@ -13,8 +13,8 @@ const Finder = (props) => (
                     <Table
                         dataSource={props.catalog}
                         columns={columns}
-                        onRow={onRow}
-                        onHeaderRow={onHeaderRow(ctx)}
+                        onRow={onRow(state, ctx, props.type)}
+                        onHeaderRow={onHeaderRow(state, ctx, props.type)}
                     />
                 )}
             </ModeContext.Consumer>
@@ -22,10 +22,16 @@ const Finder = (props) => (
     </AppState.Consumer>
 );
 
-const onRow = (record, rowIndex) => {
+const onRow = (state, ctx, type) => (record, rowIndex) => {
     return {
-        onClick: (event) => {
-            console.log("+++++", record);
+        onClick: () => {
+            console.log("++++", state);
+            if (record.__typename === "Product") {
+                ctx.onMode(ProductEditorMode);
+            }
+            if (record.__typename === "Folder") {
+                state.panel[type].currentFolder = record;
+            }
         },
         onDoubleClick: (event) => {},
         onContextMenu: (event) => {},

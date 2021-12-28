@@ -6,6 +6,7 @@ import PageLayout from "../Page/Layout";
 import "../Page/index.less";
 import Panel from "../Panel";
 import AppState from "../GlobalContext/AppState";
+import { InitialStorage, StorageContext } from "../Storage";
 
 const MainPage = (props) => {
     const appState = {
@@ -14,6 +15,7 @@ const MainPage = (props) => {
                 currentFolder: {
                     id: props.currentFolder,
                 },
+                openFolder: () => {},
             },
             right: {
                 currentFolder: {
@@ -22,23 +24,26 @@ const MainPage = (props) => {
             },
         },
     };
+
     return (
-        <PageLayout {...props}>
-            <AppState.Provider value={appState}>
-                <Row>
-                    <Col span={12}>
-                        <Layout.Content style={{ padding: "2em" }}>
-                            <Panel {...props} type={"left"} />
-                        </Layout.Content>
-                    </Col>
-                    <Col span={12}>
-                        <Layout.Content style={{ padding: "2em" }}>
-                            <Panel {...props} type={"right"} />
-                        </Layout.Content>
-                    </Col>
-                </Row>
-            </AppState.Provider>
-        </PageLayout>
+        <StorageContext.Provider value={InitialStorage(client)}>
+            <PageLayout {...props}>
+                <AppState.Provider value={appState}>
+                    <Row>
+                        <Col span={12}>
+                            <Layout.Content style={{ padding: "2em" }}>
+                                <Panel {...props} type={"left"} />
+                            </Layout.Content>
+                        </Col>
+                        <Col span={12}>
+                            <Layout.Content style={{ padding: "2em" }}>
+                                <Panel {...props} type={"right"} />
+                            </Layout.Content>
+                        </Col>
+                    </Row>
+                </AppState.Provider>
+            </PageLayout>
+        </StorageContext.Provider>
     );
 };
 
