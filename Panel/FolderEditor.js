@@ -2,10 +2,12 @@ import React from "react";
 import { Card, Form, Input, Button } from "antd";
 
 import { StorageContext } from "../Storage";
+import ModeContext, { FinderMode } from "./Modes";
 
 const FolderEditor = () => {
     const [form] = Form.useForm();
     const storage = React.useContext(StorageContext);
+    const mode = React.useContext(ModeContext);
 
     const onSave = async (all) => {
         try {
@@ -15,6 +17,7 @@ const FolderEditor = () => {
                 return;
             }
             console.log("addFolder failed to add", data);
+            mode.onMode(FinderMode);
         } catch (e) {
             console.log("addFolder failed to add", e, data);
         }
