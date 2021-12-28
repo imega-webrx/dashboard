@@ -14,6 +14,7 @@ const FolderEditor = () => {
             const { data } = await storage.addFolder(all);
             if (data.addFolder === true) {
                 console.log("addFolder", data);
+                mode.onMode(FinderMode);
                 return;
             }
             console.log("addFolder failed to add", data);
