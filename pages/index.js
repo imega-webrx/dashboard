@@ -14,12 +14,14 @@ const MainPage = (props) => {
             left: {
                 currentFolder: {
                     id: props.currentFolder,
+                    isRoot: true,
                 },
                 openFolder: () => {},
             },
             right: {
                 currentFolder: {
                     id: props.currentFolder,
+                    isRoot: true,
                 },
             },
         },

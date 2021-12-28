@@ -3,11 +3,16 @@ import { Card, Form, Input, Button } from "antd";
 
 import { StorageContext } from "../Storage";
 import ModeContext, { FinderMode } from "./Modes";
+import AppState from "../GlobalContext/AppState";
 
-const FolderEditor = () => {
-    const [form] = Form.useForm();
+const FolderEditor = (props) => {
     const storage = React.useContext(StorageContext);
     const mode = React.useContext(ModeContext);
+    const appState = React.useContext(AppState);
+
+    const [form] = Form.useForm();
+
+    const curFolder = appState.panel[props.type].currentFolder;
 
     const onSave = async (all) => {
         try {
@@ -32,6 +37,7 @@ const FolderEditor = () => {
                 wrapperCol={{ span: 16 }}
                 autoComplete="off"
                 onFinish={onSave}
+                initialValues={curFolder}
             >
                 <Form.Item hidden={true} name="parentid">
                     <Input />

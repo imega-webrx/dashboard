@@ -1,4 +1,4 @@
-import { gql, useMutation } from "@apollo/client";
+import { gql, useMutation, useQuery } from "@apollo/client";
 import { v4 } from "uuid";
 
 const InitialFolderStorage = (client) => {
@@ -11,6 +11,17 @@ const InitialFolderStorage = (client) => {
     const [addFolderFn] = useMutation(addFolderFN, opts);
 
     return {
+        openFolder: async (id) => {
+            const { data } = await client.query({
+                query: openFolderFN,
+                variables: {
+                    id: id,
+                },
+                ...opts,
+            });
+
+            return data;
+        },
         updateFolder: (input) =>
             updateFolderFn({
                 variables: {
@@ -31,6 +42,25 @@ const InitialFolderStorage = (client) => {
             }),
     };
 };
+
+const openFolderFN = gql`
+    query catalog($id: ID) {
+        catalog(id: $id) {
+            ... on Folder {
+                __typename
+                id
+                title
+                description
+            }
+            ... on Product {
+                __typename
+                id
+                title
+                description
+            }
+        }
+    }
+`;
 
 const updateFolderFN = gql`
     mutation updateFolder($id: ID!, $input: FolderInput!) {
