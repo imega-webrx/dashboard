@@ -1,12 +1,14 @@
 import { gql } from "@apollo/client";
-import client from "../src/apollo-client";
 import { Layout, Row, Col } from "antd";
 
+import client from "../src/apollo-client";
 import PageLayout from "../Page/Layout";
 import "../Page/index.less";
 import Panel from "../Panel";
 import AppState from "../GlobalContext/AppState";
 import { InitialStorage, StorageContext } from "../Storage";
+
+const Storage = InitialStorage(client);
 
 const MainPage = (props) => {
     const appState = {
@@ -16,6 +18,7 @@ const MainPage = (props) => {
                     id: props.currentFolder,
                     isRoot: true,
                 },
+                editFolder: {},
                 openFolder: () => {},
             },
             right: {
@@ -28,7 +31,7 @@ const MainPage = (props) => {
     };
 
     return (
-        <StorageContext.Provider value={InitialStorage(client)}>
+        <StorageContext.Provider value={Storage}>
             <PageLayout {...props}>
                 <AppState.Provider value={appState}>
                     <Row>
@@ -107,4 +110,4 @@ export async function getServerSideProps() {
     };
 }
 
-export default MainPage;
+export default Storage.openFolder(MainPage);

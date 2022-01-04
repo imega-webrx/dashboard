@@ -31,7 +31,13 @@ const ToolBar = () => (
     </nav>
 );
 
-const RootBtn = () => <Button icon={<AimOutlined />}>Root</Button>;
+const RootBtn = () => (
+    <Button icon={<AimOutlined />} onClick={clickRootBtn}>
+        Root
+    </Button>
+);
+
+const clickRootBtn = () => {};
 
 const SortBtn = () => <Button icon={<UnorderedListOutlined />}>Sort</Button>;
 
@@ -51,11 +57,10 @@ const AddFolderBtn = () => (
     </ModeContext.Consumer>
 );
 
-const clickAddFolderBtn = (ctx) => () => {
+const clickAddFolderBtn = (ctx) => () =>
     ctx.onMode((prevMode) =>
         prevMode === FolderEditorMode ? FinderMode : FolderEditorMode
     );
-};
 
 const AddProductBtn = () => (
     <ModeContext.Consumer>
@@ -88,10 +93,9 @@ const DeleteBtn = () => (
         style={{ float: "right" }}
         icon={<DeleteOutlined />}
         type="danger"
+        title="Delete"
         disabled
-    >
-        Delete
-    </Button>
+    />
 );
 
 export default ToolBar;

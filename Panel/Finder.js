@@ -4,39 +4,33 @@ import { FolderOutlined, FileTextOutlined } from "@ant-design/icons";
 
 import ModeContext, { FolderEditorMode, ProductEditorMode } from "./Modes";
 import AppState from "../GlobalContext/AppState";
-import { StorageContext } from "../Storage";
 
-const Finder = (props) => {
-    const storage = React.useContext(StorageContext);
-    return (
-        <AppState.Consumer>
-            {(state) => (
-                <ModeContext.Consumer>
-                    {(ctx) => (
-                        <Table
-                            dataSource={props.catalog}
-                            columns={columns}
-                            onRow={onRow(storage, state, ctx, props.type)}
-                            onHeaderRow={onHeaderRow(state, ctx, props.type)}
-                        />
-                    )}
-                </ModeContext.Consumer>
-            )}
-        </AppState.Consumer>
-    );
-};
+const Finder = (props) => (
+    <AppState.Consumer>
+        {(state) => (
+            <ModeContext.Consumer>
+                {(ctx) => (
+                    <Table
+                        dataSource={props.catalog}
+                        columns={columns}
+                        onRow={onRow(state, ctx, props.type, props.refetch)}
+                        onHeaderRow={onHeaderRow(state, ctx, props.type)}
+                    />
+                )}
+            </ModeContext.Consumer>
+        )}
+    </AppState.Consumer>
+);
 
-const onRow = (storage, state, ctx, type) => (record, rowIndex) => ({
+const onRow = (state, ctx, type, refetch) => (record) => ({
     onClick: () => {
-        console.log("++++", state);
         if (record.__typename === "Product") {
             ctx.onMode(ProductEditorMode);
         }
 
         if (record.__typename === "Folder") {
             state.panel[type].currentFolder = record;
-            console.log(storage);
-            storage.openFolder(record.id);
+            refetch({ id: record.id });
         }
     },
 });

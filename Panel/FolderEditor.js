@@ -12,32 +12,33 @@ const FolderEditor = (props) => {
 
     const [form] = Form.useForm();
 
-    const curFolder = appState.panel[props.type].currentFolder;
+    const folder = appState.panel[props.type].editFolder;
 
     const onSave = async (all) => {
         try {
             const { data } = await storage.saveFolder(all);
             if (data.addFolder === true || data.updateFolder === true) {
-                console.log("addFolder", data);
+                props.refetch();
                 mode.onMode(FinderMode);
+
                 return;
             }
-            console.log("addFolder failed to add", data);
+
             mode.onMode(FinderMode);
         } catch (e) {
-            console.log("addFolder failed to add", e, data);
+            console.log("addFolder failed to add", e);
         }
     };
 
     return (
-        <Card title="New folder">
+        <Card title={"New folder"}>
             <Form
                 form={form}
                 labelCol={{ span: 6 }}
                 wrapperCol={{ span: 16 }}
                 autoComplete="off"
                 onFinish={onSave}
-                initialValues={curFolder}
+                initialValues={folder}
             >
                 <Form.Item hidden={true} name="id">
                     <Input />

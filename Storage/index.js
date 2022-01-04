@@ -1,11 +1,19 @@
 import React from "react";
+import { ApolloProvider } from "@apollo/client";
 
+import apolloClient from "../src/apollo-client";
 import InitialFolderStorage from "./Folder";
 
 const StorageContext = React.createContext({});
 
-const InitialStorage = (apolloClient) => ({
+const InitialStorage = () => ({
     ...InitialFolderStorage(apolloClient),
 });
 
-export { InitialStorage, StorageContext };
+const Wrapper = ({ Component, props }) => (
+    <ApolloProvider client={apolloClient}>
+        <Component {...props} />
+    </ApolloProvider>
+);
+
+export { InitialStorage, StorageContext, Wrapper };
