@@ -1,3 +1,3 @@
-import { Wrapper } from "../Storage";
+import { PageWrapper } from "../Storage";
 
-export default Wrapper;
+export default PageWrapper;
