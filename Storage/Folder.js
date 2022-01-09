@@ -17,7 +17,10 @@ const InitialFolderStorage = (client) => {
                     id: "ed4bf8f5-8b4e-435b-83cc-27feada6136a",
                 },
             }),
-            props: ({ data }) => data,
+            props: ({ data }) => ({
+                ...data,
+                reopenFolder: (id) => data.refetch({ variables: id }),
+            }),
         }),
         saveFolder: async (input) => {
             if (input.hasOwnProperty("id") && typeof input.id !== "undefined") {
