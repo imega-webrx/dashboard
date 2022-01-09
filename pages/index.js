@@ -37,12 +37,12 @@ const MainPage = (props) => {
                     <Row>
                         <Col span={12}>
                             <Layout.Content style={{ padding: "2em" }}>
-                                <Panel {...props} type={"left"} />
+                                <LeftPanelWithCatalog {...props} />
                             </Layout.Content>
                         </Col>
                         <Col span={12}>
                             <Layout.Content style={{ padding: "2em" }}>
-                                <Panel {...props} type={"right"} />
+                                <RightPanelWithCatalog {...props} />
                             </Layout.Content>
                         </Col>
                     </Row>
@@ -51,6 +51,12 @@ const MainPage = (props) => {
         </StorageContext.Provider>
     );
 };
+
+const LeftPanel = (props) => <Panel {...props} type={"left"} />;
+const LeftPanelWithCatalog = Storage.openFolder(LeftPanel);
+
+const RightPanel = (props) => <Panel {...props} type={"right"} />;
+const RightPanelWithCatalog = Storage.openFolder(RightPanel);
 
 export async function getServerSideProps() {
     const rootFolder = "ed4bf8f5-8b4e-435b-83cc-27feada6136a";
