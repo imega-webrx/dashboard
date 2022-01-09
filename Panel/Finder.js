@@ -11,6 +11,7 @@ const Finder = (props) => (
             <ModeContext.Consumer>
                 {(ctx) => (
                     <Table
+                        rowKey="id"
                         dataSource={props.catalog}
                         columns={columns}
                         onRow={onRow(state, ctx, props.type, props.refetch)}
