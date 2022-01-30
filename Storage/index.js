@@ -10,10 +10,15 @@ const InitialStorage = () => ({
     ...InitialFolderStorage(apolloClient),
 });
 
-const PageWrapper = ({ Component, pageProps, router, err }) => (
-    <ApolloProvider client={apolloClient}>
-        <Component {...pageProps} />
-    </ApolloProvider>
-);
+const PageWrapper = ({ Component, pageProps, router, err }) => {
+    console.log("PageWrapper");
+    return (
+        <ApolloProvider client={apolloClient}>
+            {/*<StorageContext.Provider value={InitialStorage()}>*/}
+            <Component {...pageProps} router={router} />
+            {/*</StorageContext.Provider>*/}
+        </ApolloProvider>
+    );
+};
 
 export { InitialStorage, StorageContext, PageWrapper };

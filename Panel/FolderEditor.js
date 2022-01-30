@@ -1,28 +1,31 @@
 import React from "react";
 import { Card, Form, Input, Button } from "antd";
 
-import { StorageContext } from "../Storage";
 import ModeContext, { FinderMode } from "./Modes";
-import AppState from "../GlobalContext/AppState";
+import PanelCtx from "./Context";
 
-const FolderEditor = (props) => {
-    const storage = React.useContext(StorageContext);
+const FolderEditor = () => {
+    // const storage = React.useContext(StorageContext);
     const mode = React.useContext(ModeContext);
-    const appState = React.useContext(AppState);
+    const ctx = React.useContext(PanelCtx);
+    console.log("====FolderEditor", ctx.saveFolder);
+    // const appState = React.useContext(AppState);
 
     const [form] = Form.useForm();
 
-    const folder = appState.panel[props.type].editFolder;
+    // const folder = appState.panel[props.type].editFolder;
 
     const onSave = async (all) => {
         try {
-            const { data } = await storage.saveFolder(all);
-            if (data.addFolder === true || data.updateFolder === true) {
-                props.refetch();
-                mode.onMode(FinderMode);
+            console.log("====+++FolderEditor", ctx.saveFolder);
+            ctx.saveFolder(all);
+            // const { data } = await storage.saveFolder(all);
+            // if (data.addFolder === true || data.updateFolder === true) {
+            //     props.refetch();
+            //     mode.onMode(FinderMode);
 
-                return;
-            }
+            //     return;
+            // }
 
             mode.onMode(FinderMode);
         } catch (e) {
@@ -38,7 +41,7 @@ const FolderEditor = (props) => {
                 wrapperCol={{ span: 16 }}
                 autoComplete="off"
                 onFinish={onSave}
-                initialValues={folder}
+                initialValues={ctx.getEditFolder()}
             >
                 <Form.Item hidden={true} name="id">
                     <Input />

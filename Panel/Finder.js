@@ -3,47 +3,45 @@ import { Table } from "antd";
 import { FolderOutlined, FileTextOutlined } from "@ant-design/icons";
 
 import ModeContext, { FolderEditorMode, ProductEditorMode } from "./Modes";
-import AppState from "../GlobalContext/AppState";
+import PanelCtx from "./Context";
 
-const Finder = (props) => (
-    <AppState.Consumer>
-        {(state) => (
+const Finder = () => (
+    <PanelCtx.Consumer>
+        {(api) => (
             <ModeContext.Consumer>
-                {(ctx) => (
+                {(mode) => (
                     <Table
                         rowKey="id"
-                        dataSource={props.catalog}
+                        dataSource={api.content()}
                         columns={columns}
-                        onRow={onRow(state, ctx, props.type, props.refetch)}
-                        onHeaderRow={onHeaderRow(state, ctx, props.type)}
+                        onRow={onRow(api, mode)}
+                        onHeaderRow={onHeaderRow(api, mode)}
                     />
                 )}
             </ModeContext.Consumer>
         )}
-    </AppState.Consumer>
+    </PanelCtx.Consumer>
 );
 
-const onRow = (state, ctx, type, refetch) => (record) => ({
+const onRow = (api, mode) => (record) => ({
     onClick: () => {
         if (record.__typename === "Product") {
-            ctx.onMode(ProductEditorMode);
+            mode.onMode(ProductEditorMode);
         }
 
         if (record.__typename === "Folder") {
-            state.panel[type].currentFolder = record;
-            refetch({ id: record.id });
+            api.openFolder(record);
         }
     },
 });
 
-const onHeaderRow = (state, ctx, type) => () => ({
+const onHeaderRow = (api, mode) => () => ({
     onClick: () => {
-        const f = state.panel[type].currentFolder;
-        if (f.hasOwnProperty("isRoot") && f.isRoot === true) {
+        if (api.editFolder() === false) {
             return;
         }
 
-        ctx.onMode(FolderEditorMode);
+        mode.onMode(FolderEditorMode);
     },
 });
 

@@ -3,45 +3,67 @@ import { gql } from "@apollo/client";
 import { v4 } from "uuid";
 
 const InitialFolderStorage = (client) => {
+    console.log("InitialFolderStorage");
     const opts = {
         client: client,
         errorPolicy: "all",
     };
 
+    const rootFolderID = "ed4bf8f5-8b4e-435b-83cc-27feada6136a";
+
     return {
-        openFolder: graphql(openFolderFN, {
+        initFolder: graphql(openFolderFN, {
             options: () => ({
                 // errorPolicy: "ignore",
                 ssr: false,
                 variables: {
-                    id: "ed4bf8f5-8b4e-435b-83cc-27feada6136a",
+                    id: rootFolderID,
                 },
             }),
-            props: ({ data }) => ({
-                ...data,
-                reopenFolder: (id) => data.refetch({ variables: id }),
-            }),
+            props: ({ data }) => {
+                console.log("initFolder loading=", data);
+                return {
+                    ...data,
+                    openFolder: (id) => data.refetch({ id }),
+                    rootFolder: () => data.refetch({ id: rootFolderID }),
+                };
+            },
         }),
         saveFolder: async (input) => {
             if (input.hasOwnProperty("id") && typeof input.id !== "undefined") {
-                return await client.mutate({
+                const res = await client.mutate({
                     ...opts,
                     mutation: updateFolderFN,
                     variables: {
                         input: input,
                     },
                 });
+
+                return { ...res, ...input };
             }
 
-            return await client.mutate({
+            const id = v4();
+            const res = await client.mutate({
                 ...opts,
                 mutation: addFolderFN,
                 variables: {
                     input: {
                         ...input,
-                        id: v4(),
+                        id,
                     },
                 },
+            });
+
+            return {
+                ...res,
+                input: { ...input, id },
+            };
+        },
+        moveToFolder: async (input) => {
+            return await client.mutate({
+                ...opts,
+                mutation: moveToFolderFN,
+                variables: { input },
             });
         },
     };
@@ -75,6 +97,12 @@ const updateFolderFN = gql`
 const addFolderFN = gql`
     mutation AddFolder($input: FolderInput!) {
         addFolder(input: $input)
+    }
+`;
+
+const moveToFolderFN = gql`
+    mutation MoveToFolder($input: TripleInput!) {
+        moveToFolder(input: $input)
     }
 `;
 

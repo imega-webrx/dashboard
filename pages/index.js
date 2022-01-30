@@ -5,60 +5,50 @@ import client from "../src/apollo-client";
 import PageLayout from "../Page/Layout";
 import "../Page/index.less";
 import Panel from "../Panel";
-import AppState from "../GlobalContext/AppState";
+import AppState, { InitApp } from "../GlobalContext/AppState";
 import { InitialStorage, StorageContext } from "../Storage";
 
 const Storage = InitialStorage(client);
+const app = InitApp(Storage);
+
+const PANEL_LEFT = "left";
+const PANEL_RIGHT = "right";
+
+console.log("INDEX.js");
 
 const MainPage = (props) => {
-    const appState = {
-        panel: {
-            left: {
-                currentFolder: {
-                    id: props.currentFolder,
-                    isRoot: true,
-                },
-                editFolder: {},
-                openFolder: () => {},
-            },
-            right: {
-                currentFolder: {
-                    id: props.currentFolder,
-                    isRoot: true,
-                },
-            },
-        },
-    };
+    console.log("MainPage", props);
+    app.registerRouter(props.router);
 
     return (
-        <StorageContext.Provider value={Storage}>
-            <PageLayout {...props}>
-                <AppState.Provider value={appState}>
-                    <Row>
-                        <Col span={12}>
-                            <Layout.Content style={{ padding: "2em" }}>
-                                <LeftPanelWithCatalog {...props} />
-                            </Layout.Content>
-                        </Col>
-                        <Col span={12}>
-                            <Layout.Content style={{ padding: "2em" }}>
-                                <RightPanelWithCatalog {...props} />
-                            </Layout.Content>
-                        </Col>
-                    </Row>
-                </AppState.Provider>
-            </PageLayout>
-        </StorageContext.Provider>
+        <PageLayout {...props}>
+            <Row>
+                <Col span={12}>
+                    <Layout.Content style={{ padding: "2em" }}>
+                        <LeftPanelWithCatalog {...props} />
+                    </Layout.Content>
+                </Col>
+                <Col span={12}>
+                    <Layout.Content style={{ padding: "2em" }}>
+                        <RightPanelWithCatalog {...props} />
+                    </Layout.Content>
+                </Col>
+            </Row>
+        </PageLayout>
     );
 };
 
-const LeftPanel = (props) => <Panel {...props} type={"left"} />;
-const LeftPanelWithCatalog = Storage.openFolder(LeftPanel);
+const LeftPanel = (props) => (
+    <Panel {...app.registerPanel(props, PANEL_LEFT)} />
+);
+const LeftPanelWithCatalog = Storage.initFolder(LeftPanel);
 
-const RightPanel = (props) => <Panel {...props} type={"right"} />;
-const RightPanelWithCatalog = Storage.openFolder(RightPanel);
+const RightPanel = (props) => (
+    <Panel {...app.registerPanel(props, PANEL_RIGHT)} />
+);
+const RightPanelWithCatalog = Storage.initFolder(RightPanel);
 
-export async function getServerSideProps() {
+export async function getServerSideProps1() {
     const rootFolder = "ed4bf8f5-8b4e-435b-83cc-27feada6136a";
     const { data } = await client
         .query({
@@ -110,10 +100,24 @@ export async function getServerSideProps() {
 
     return {
         props: {
+            fromSSR: true,
+            panel: {
+                [PANEL_LEFT]: {
+                    currentFolder: {
+                        id: rootFolder,
+                        isRoot: true,
+                    },
+                },
+                [PANEL_RIGHT]: {
+                    currentFolder: {
+                        id: rootFolder,
+                        isRoot: true,
+                    },
+                },
+            },
             catalog: data.catalog,
-            currentFolder: rootFolder,
         },
     };
 }
 
-export default Storage.openFolder(MainPage);
+export default MainPage;

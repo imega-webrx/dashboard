@@ -10,6 +10,7 @@ import {
     DeleteOutlined,
 } from "@ant-design/icons";
 
+import PanelCtx from "./Context";
 import ModeContext, {
     FinderMode,
     FolderEditorMode,
@@ -32,35 +33,43 @@ const ToolBar = () => (
 );
 
 const RootBtn = () => (
-    <Button icon={<AimOutlined />} onClick={clickRootBtn}>
-        Root
-    </Button>
+    <PanelCtx.Consumer>
+        {(api) => (
+            <Button icon={<AimOutlined />} onClick={api.rootFolder}>
+                Root
+            </Button>
+        )}
+    </PanelCtx.Consumer>
 );
-
-const clickRootBtn = () => {};
 
 const SortBtn = () => <Button icon={<UnorderedListOutlined />}>Sort</Button>;
 
 const CheckBtn = () => <Button icon={<CheckSquareOutlined />}>Check</Button>;
 
 const AddFolderBtn = () => (
-    <ModeContext.Consumer>
-        {(ctx) => (
-            <Button
-                icon={<FolderAddOutlined />}
-                onClick={clickAddFolderBtn(ctx)}
-                type={ctx.currentMode === FolderEditorMode && "primary"}
-            >
-                Folder
-            </Button>
+    <PanelCtx.Consumer>
+        {(api) => (
+            <ModeContext.Consumer>
+                {(ctx) => (
+                    <Button
+                        icon={<FolderAddOutlined />}
+                        onClick={clickAddFolderBtn(api, ctx)}
+                        type={ctx.currentMode === FolderEditorMode && "primary"}
+                    >
+                        Folder
+                    </Button>
+                )}
+            </ModeContext.Consumer>
         )}
-    </ModeContext.Consumer>
+    </PanelCtx.Consumer>
 );
 
-const clickAddFolderBtn = (ctx) => () =>
+const clickAddFolderBtn = (api, ctx) => () => {
+    api.newFolder();
     ctx.onMode((prevMode) =>
         prevMode === FolderEditorMode ? FinderMode : FolderEditorMode
     );
+};
 
 const AddProductBtn = () => (
     <ModeContext.Consumer>

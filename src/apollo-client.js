@@ -1,7 +1,6 @@
 import { ApolloClient, InMemoryCache } from "@apollo/client";
 
-const addr =
-    typeof window === "undefined" ? "http://localhost" : "https://webrx.ru";
+const addr = "http://localhost:4000";
 
 const client = new ApolloClient({
     ssrMode: typeof window === "undefined",

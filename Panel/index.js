@@ -9,8 +9,10 @@ import ModeContext, {
 import Finder from "./Finder";
 import FolderEditor from "./FolderEditor";
 import ProductEditor from "./ProductEditor";
+import PanelCtx from "./Context";
 
 const Panel = (props) => {
+    console.log("===PANEL", props);
     const [mode, setMode] = React.useState(FinderMode);
 
     const modeCtx = {
@@ -19,12 +21,14 @@ const Panel = (props) => {
     };
 
     return (
-        <ModeContext.Provider value={modeCtx}>
-            <ToolBar currentMode={mode} onMode={setMode} />
-            {mode === FinderMode && <Finder {...props} />}
-            {mode === FolderEditorMode && <FolderEditor {...props} />}
-            {mode === ProductEditorMode && <ProductEditor />}
-        </ModeContext.Provider>
+        <PanelCtx.Provider value={props}>
+            <ModeContext.Provider value={modeCtx}>
+                <ToolBar currentMode={mode} onMode={setMode} />
+                {mode === FinderMode && <Finder />}
+                {mode === FolderEditorMode && <FolderEditor />}
+                {mode === ProductEditorMode && <ProductEditor />}
+            </ModeContext.Provider>
+        </PanelCtx.Provider>
     );
 };
 

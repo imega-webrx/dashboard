@@ -1,10 +1,5 @@
 import React from "react";
 
-const PanelContext = React.createContext(defaultContext);
-
-const defaultContext = {
-    currentFolder: "",
-    linkToFolder: "",
-};
+const PanelContext = React.createContext();
 
 export default PanelContext;
